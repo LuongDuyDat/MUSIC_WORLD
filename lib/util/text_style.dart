@@ -1,0 +1,28 @@
+import 'package:flutter/cupertino.dart';
+
+TextStyle title1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 48);
+TextStyle title2 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 36);
+TextStyle titleBold3 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 28);
+TextStyle titleMedium3 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: 28);
+TextStyle title4 = const TextStyle(fontFamily: 'Roboto', fontSize: 28);
+TextStyle title5 = const TextStyle(fontFamily: 'Roboto', fontSize: 22, fontWeight: FontWeight.w700);
+TextStyle headlineBold1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 16);
+TextStyle headlineMedium1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: 16);
+TextStyle headlineBold2 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 14);
+TextStyle headlineMedium2 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: 14);
+TextStyle headline3 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w900, fontSize: 10);
+TextStyle subHeadline1 = const TextStyle(fontFamily: 'Roboto', fontSize: 18);
+TextStyle subHeadline2 = const TextStyle(fontFamily: 'Roboto', fontSize: 12);
+TextStyle subHeadline3 = const TextStyle(fontFamily: 'Roboto', fontSize: 8);
+TextStyle bodyBold1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 16);
+TextStyle bodyMedium1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: 16);
+TextStyle bodyRegular1 = const TextStyle(fontFamily: 'Roboto', fontSize: 16);
+TextStyle bodyRoboto2 = const TextStyle(fontFamily: 'Roboto', fontSize: 14);
+TextStyle bodyMontserratMedium2 = const TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w400, fontSize: 14);
+TextStyle bodyMontserratSemiBold2 = const TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w800, fontSize: 14);
+TextStyle bodyRegular3 = const TextStyle(fontFamily: 'Roboto', fontSize: 12);
+TextStyle bodyBold3 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700 , fontSize: 12);
+TextStyle labelBold1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700, fontSize: 14);
+TextStyle labelMedium1 = const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: 14);
+TextStyle label2 = const TextStyle(fontFamily: 'Montserrat', fontSize: 10);
+TextStyle lyric = const TextStyle(fontFamily: 'Roboto', fontSize: 14);
