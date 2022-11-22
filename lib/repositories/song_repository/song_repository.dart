@@ -17,6 +17,24 @@ class SongRepository {
     songBox.add(song);
   }
 
+  void addFavorite(Artist artist, Song song) async{
+    artist.favorites ??= HiveList(Hive.box<Song>('song'));
+    artist.favorites!.add(song);
+    await artist.save();
+  }
+
+  void removeFavorite(Artist artist, Song song) async{
+    artist.favorites!.remove(song);
+    await artist.save();
+  }
+
+  bool checkFavorite(Artist artist, Song song) {
+    if (artist.favorites == null) {
+      return false;
+    }
+    return artist.favorites!.contains(song);
+  }
+
   Stream<Song> getSongs() async* {
     var items = songBox.values.toList();
     for (int i = 0; i < items.length; i++) {

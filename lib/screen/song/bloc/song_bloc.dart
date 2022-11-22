@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:music_world_app/screen/song/bloc/song_event.dart';
 import 'package:music_world_app/screen/song/bloc/song_state.dart';
+import 'package:music_world_app/util/globals.dart';
 
 import '../../../repositories/song_repository/models/song.dart';
 import '../../../repositories/song_repository/song_repository.dart';
@@ -11,6 +12,9 @@ class SongBloc extends Bloc<SongEvent, SongState> {
   }) : _songRepository = songRepository,
         super(const SongState()) {
     on<SuggestionSongSubscriptionRequest>(_onSuggestionSubscriptionRequest);
+    on<CheckFavorites>(_onCheckFavorites);
+    on<AddFavoriteSong>(_onAddFavoriteSong);
+    on<RemoveFavoriteSong>(_onRemoveFavoriteSong);
   }
 
   final SongRepository _songRepository;
@@ -42,6 +46,43 @@ class SongBloc extends Bloc<SongEvent, SongState> {
               songSuggestionStatus: () => SongStatus.success
           ));
     }
+  }
+
+  void _onCheckFavorites(
+      CheckFavorites event,
+      Emitter<SongState> emit,
+      ) {
+    emit(state.copyWith(
+      isFavorites: () => _songRepository.checkFavorite(account, event.song),
+    ));
+  }
+
+  Future<void> _onAddFavoriteSong(
+      AddFavoriteSong event,
+      Emitter<SongState> emit,
+      ) async {
+    emit(state.copyWith(
+      addFavoriteStatus: () => SongStatus.loading,
+    ));
+    _songRepository.addFavorite(account, event.song);
+    emit(state.copyWith(
+      addFavoriteStatus: () => SongStatus.success,
+      isFavorites: () => true,
+    ));
+  }
+
+  Future<void> _onRemoveFavoriteSong(
+      RemoveFavoriteSong event,
+      Emitter<SongState> emit,
+      ) async {
+    emit(state.copyWith(
+      addFavoriteStatus: () => SongStatus.loading,
+    ));
+    _songRepository.removeFavorite(account, event.song);
+    emit(state.copyWith(
+      addFavoriteStatus: () => SongStatus.success,
+      isFavorites: () => false,
+    ));
   }
 
 }

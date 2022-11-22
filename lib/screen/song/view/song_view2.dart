@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_world_app/components/play_bar.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
 import 'package:music_world_app/screen/singer/view/singer_info.dart';
+import 'package:music_world_app/screen/song/bloc/song_bloc.dart';
+import 'package:music_world_app/screen/song/bloc/song_event.dart';
+import 'package:music_world_app/screen/song/bloc/song_state.dart';
 import 'package:music_world_app/util/audio.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
@@ -23,7 +27,6 @@ class SongView2 extends StatefulWidget {
 }
 
 class _SongView1State extends State<SongView2> {
-
   double _currentSlideValue = 0;
   @override
   void initState() {
@@ -127,10 +130,27 @@ class _SongView1State extends State<SongView2> {
                           ).build(context));
                     },
                   ),
-                  ImageIcon(
-                    const AssetImage("assets/icons/favorite_icon.png"),
-                    color: neutralColor1,
-                    size: 20,
+                  BlocBuilder<SongBloc, SongState>(
+                    buildWhen: (pre, state) {
+                      return pre.isFavorites != state.isFavorites;
+                    },
+                    builder: (context, state) {
+                      context.read<SongBloc>().add(CheckFavorites(song: widget.song));
+                      return InkWell(
+                        child: ImageIcon(
+                          const AssetImage("assets/icons/favorite_icon.png"),
+                          color: state.isFavorites == true ? Colors.red : neutralColor1,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          if (state.isFavorites == false) {
+                            context.read<SongBloc>().add(AddFavoriteSong(song: widget.song));
+                          } else {
+                            context.read<SongBloc>().add(RemoveFavoriteSong(song: widget.song));
+                          }
+                        },
+                      );
+                    }
                   ),
                   InkWell(
                     child: ImageIcon(

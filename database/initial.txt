@@ -1,4 +1,4 @@
-var albumBox = await Hive.openBox<Album>("album");
+  var albumBox = await Hive.openBox<Album>("album");
   var songBox = await Hive.openBox<Song>('song');
   var artistBox = await Hive.openBox<Artist>('artist');
   var playlistBox = await Hive.openBox<Playlist>('playlist');
@@ -24,6 +24,7 @@ var albumBox = await Hive.openBox<Album>("album");
     phone: '0123456789',
     email: 'buianhtuan@gmail.com',
     gender: 'Male',
+    favorites: HiveList(songBox),
   );
   Artist luongDuyDat = Artist(
     name: "Lương Duy Đạt",
@@ -40,6 +41,7 @@ var albumBox = await Hive.openBox<Album>("album");
     phone: '0968438288',
     email: 'luongduydat123@gmail.com',
     gender: 'Male',
+    favorites: HiveList(songBox),
   );
   Artist sonTungMTP = Artist(
     name: "Sơn Tùng MTP",
@@ -59,6 +61,7 @@ var albumBox = await Hive.openBox<Album>("album");
     phone: '0123456789',
     email: 'mtp@gmail.com',
     gender: 'Male',
+    favorites: HiveList(songBox),
   );
   Artist hienHo = Artist(
     name: "Hiền Hồ",
@@ -79,6 +82,7 @@ var albumBox = await Hive.openBox<Album>("album");
     phone: '0123456789',
     email: 'buianhtuan@gmail.com',
     gender: 'Male',
+    favorites: HiveList(songBox),
   );
   Song rntchnd = Song(
     name: "Rồi người thương cũng hoá người dưng",

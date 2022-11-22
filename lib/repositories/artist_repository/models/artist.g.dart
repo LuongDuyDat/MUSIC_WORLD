@@ -31,13 +31,14 @@ class ArtistAdapter extends TypeAdapter<Artist> {
       phone: fields[11] as String,
       gender: fields[12] as String,
       dob: fields[13] as DateTime,
+      favorites: (fields[14] as HiveList?)?.castHiveList(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Artist obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -65,7 +66,9 @@ class ArtistAdapter extends TypeAdapter<Artist> {
       ..writeByte(12)
       ..write(obj.gender)
       ..writeByte(13)
-      ..write(obj.dob);
+      ..write(obj.dob)
+      ..writeByte(14)
+      ..write(obj.favorites);
   }
 
   @override

@@ -36,6 +36,8 @@ class Artist extends HiveObject {
   final String gender;
   @HiveField(13)
   final DateTime dob;
+  @HiveField(14)
+  late final HiveList<Song>? favorites;
 
   Artist({
     required this.name,
@@ -52,5 +54,6 @@ class Artist extends HiveObject {
     required this.phone,
     required this.gender,
     required this.dob,
+    this.favorites,
   });
 }
