@@ -14,7 +14,9 @@ import '../../../components/notifications.dart';
 
 class SongView2 extends StatefulWidget {
   final Song song;
-  const SongView2({Key? key, required this.song,}) : super(key: key);
+  final void Function() onNextClick;
+  final void Function() onPrevClick;
+  const SongView2({Key? key, required this.song, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
 
   @override
   _SongView1State createState() => _SongView1State();
@@ -23,7 +25,6 @@ class SongView2 extends StatefulWidget {
 class _SongView1State extends State<SongView2> {
 
   double _currentSlideValue = 0;
-
   @override
   void initState() {
     super.initState();
@@ -185,7 +186,7 @@ class _SongView1State extends State<SongView2> {
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.0246,),
-                    const PlayingBar(type: 0,),
+                    PlayingBar(type: 0, onNextClick: widget.onNextClick, onPrevClick: widget.onPrevClick,),
                   ],
                 )
             ),

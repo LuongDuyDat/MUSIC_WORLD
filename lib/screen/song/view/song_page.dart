@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -15,7 +17,8 @@ import '../../../util/navigate.dart';
 
 class SongPage extends StatefulWidget {
   final Song song;
-  const SongPage({Key? key, required this.song,}) : super(key: key);
+  final int selectedIndex;
+  const SongPage({Key? key, required this.song, this.selectedIndex = 0,}) : super(key: key);
 
   @override
   _SongPageState createState() => _SongPageState();
@@ -23,19 +26,65 @@ class SongPage extends StatefulWidget {
 
 class _SongPageState extends State<SongPage> {
   int selectedIndex = 0;
-
   @override
   void initState() {
     super.initState();
     play(widget.song);
+    selectedIndex = widget.selectedIndex;
+  }
+
+  void onNextClick() {
+    Box songBox = Hive.box<Song>('song');
+    var items = songBox.values.toList();
+    int resultI = -1;
+    for (int i = 0; i < items.length; i++) {
+      if (widget.song.key == items[i].key) {
+        resultI = i;
+        break;
+      }
+    }
+    int temp = resultI;
+    Random rand = Random();
+    if (shuffleSingle == 0) {
+      resultI = (resultI + 1) % items.length;
+    } else {
+      int index = resultI;
+      while (index == resultI && items.length != 1) {
+        index = rand.nextInt(items.length);
+      }
+      resultI = index;
+    }
+    prevSong[resultI] = temp;
+    Navigate.pushPageReplacement(context, SongPage(song: items[resultI], selectedIndex: 1,));
+  }
+
+  void onPrevClick() {
+    Box songBox = Hive.box<Song>('song');
+    var items = songBox.values.toList();
+    int resultI = -1;
+    for (int i = 0; i < items.length; i++) {
+      if (widget.song.key == items[i].key) {
+        resultI = i;
+        break;
+      }
+    }
+    if (shuffleSingle == 0) {
+      resultI = (resultI - 1) % items.length;
+      if (resultI < 0) {
+        resultI += items.length;
+      }
+    } else {
+      resultI = prevSong[resultI];
+    }
+    Navigate.pushPageReplacement(context, SongPage(song: items[resultI], selectedIndex: 1,));
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = [
       SongView1(song: widget.song,),
-      SongView2(song: widget.song,),
-      SongView3(song: widget.song,),
+      SongView2(song: widget.song, onNextClick: onNextClick, onPrevClick: onPrevClick,),
+      SongView3(song: widget.song, onNextClick: onNextClick, onPrevClick: onPrevClick,),
     ];
     Box<Song> songBox = Hive.box<Song>('song');
     double distance = 0;

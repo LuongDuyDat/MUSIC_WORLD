@@ -5,7 +5,9 @@ import 'package:music_world_app/util/globals.dart';
 
 class PlayingBar extends StatefulWidget {
   final int type;
-  const PlayingBar({Key? key, required this.type,}) : super(key: key);
+  final void Function() onNextClick;
+  final void Function() onPrevClick;
+  const PlayingBar({Key? key, required this.type, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
 
   @override
   _PlayingBarState createState() => _PlayingBarState();
@@ -25,13 +27,27 @@ class _PlayingBarState extends State<PlayingBar> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const ImageIcon(
-                  AssetImage("assets/icons/shuffle_icon.png"),
-                  color: Color(0xFFEEEEEE),
+                InkWell(
+                  child: ImageIcon(
+                    const AssetImage("assets/icons/shuffle_icon.png"),
+                    color: shuffleSingle == 0 ? const Color(0xFFEEEEEE) : primaryColor,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      if (shuffleSingle == 0) {
+                        shuffleSingle = 1;
+                      } else {
+                        shuffleSingle = 0;
+                      }
+                    });
+                  },
                 ),
-                const ImageIcon(
-                  AssetImage("assets/icons/skip_prev_icon.png"),
-                  color: Color(0xFFEEEEEE),
+                InkWell(
+                  child: const ImageIcon(
+                    AssetImage("assets/icons/skip_prev_icon.png"),
+                    color: Color(0xFFEEEEEE),
+                  ),
+                  onTap: widget.onPrevClick,
                 ),
                 InkWell(
                   child: widget.type == 0 ?
@@ -63,9 +79,12 @@ class _PlayingBarState extends State<PlayingBar> {
                     assetsAudioPlayer.playOrPause();
                   },
                 ),
-                const ImageIcon(
-                  AssetImage("assets/icons/skip_next_icon.png"),
-                  color: Color(0xFFEEEEEE),
+                InkWell(
+                  child: const ImageIcon(
+                    AssetImage("assets/icons/skip_next_icon.png"),
+                    color: Color(0xFFEEEEEE),
+                  ),
+                  onTap: widget.onNextClick,
                 ),
                 InkWell(
                   child: ImageIcon(
@@ -76,6 +95,11 @@ class _PlayingBarState extends State<PlayingBar> {
                     //print(1);
                     if (loop == LoopMode.none) {
                       assetsAudioPlayer.setLoopMode(LoopMode.single);
+                      if (shuffleSingle == 1) {
+                        setState(() {
+                          shuffleSingle = 0;
+                        });
+                      }
                     } else {
                       assetsAudioPlayer.toggleLoop();
                     }
