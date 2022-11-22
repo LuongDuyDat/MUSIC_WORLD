@@ -12,7 +12,7 @@ String nameString = lang=='en'?'Name':'Tên';
 String haveAccountString = lang=='en'?"Have an account? ":"Đã có tài khoản?";
 String signINString = lang=='en'?'Sign in': 'Đăng nhập';
 String passDescription = lang=='en'?'If you need help resetting your password, we can help by sending you a link to reset it.':
-    'Nếu bạn muốn đặt lại mật khẩu, chúng tôi có thể gửi link đặt lại mật khẩu cho bạn.';
+'Nếu bạn muốn đặt lại mật khẩu, chúng tôi có thể gửi link đặt lại mật khẩu cho bạn.';
 String sentString = lang=='en'?'SENT':'GỬI';
 String enterPhoneNumberString = lang=='en'?'To continue enter your phone number':'Để tiếp tục hãy nhập số điện thoại';
 String phoneString = lang=='en'?'Phone':'SĐT';
@@ -78,3 +78,7 @@ String hintPlaylistTextField = lang == 'en' ? "Enter your playlist name" : "Nh�
 String okString = "OK";
 String somethingWrong = "Something went wrong";
 String unfollowingString = lang == 'en' ? "Unfollow" : "Huỷ theo dõi";
+String errorString1 = lang == 'en' ? 'Error' : 'Lỗi';
+String errorDetail1 = lang == 'en' ? "Something went wrong" : "Có gì đó sai sót";
+String errorString2 = lang == 'en' ? 'No internet' : 'Không có Internet';
+String errorDetail2 = lang == 'en' ? 'Please check your internet connection' : 'Hãy kiểm tra kết nối Internet của bạn';
