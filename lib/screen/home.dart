@@ -3,6 +3,7 @@ import 'package:music_world_app/screen/account/view/account.dart';
 import 'package:music_world_app/screen/account/view/setting.dart';
 import 'package:music_world_app/screen/explore/view/explore_page.dart';
 import 'package:music_world_app/screen/search/view/search_page.dart';
+import 'package:music_world_app/screen/radio/view/radio_page.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/string.dart';
@@ -20,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // late AudioPlayer players = AudioPlayer();
   int index = 0;
   List<Color> itemColor = [
     primaryColor,
@@ -31,30 +33,19 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const screen = [
+  static final screen = [ //TODO: constance
     Home(),
     ExplorePage(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    Fm(),
     AccountPage(),
   ];
 
   void _onItemTapped(int _index) {
-    if (_index != 2) {
-      setState(() {
-        itemColor[index] = neutralColor2;
-        itemColor[_index] = primaryColor;
-        index = _index;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const Notifications(
-            width: 200,
-            text: 'This functionality will be published soon',
-          ).build(context));
-    }
+    setState(() {
+      itemColor[index] = neutralColor2;
+      itemColor[_index] = primaryColor;
+      index = _index;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -104,18 +95,18 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.only(right: screenWidth * 0.064),
             child: index == 0 || index == 1
                 ? IconButton(
-                  onPressed: () {
-                    Navigate.pushPage(context, const SearchPage());
-                  },
-                  icon: const Icon(Icons.search),
-                )
+              onPressed: () {
+                Navigate.pushPage(context, const SearchPage());
+              },
+              icon: const Icon(Icons.search),
+            )
                 : index == 3
                 ? IconButton(
-                    onPressed: () {
-                      Navigate.pushPage(context, const SettingPage());
-                    },
-                    icon: const Icon(Icons.settings),
-                  )
+              onPressed: () {
+                Navigate.pushPage(context, const SettingPage());
+              },
+              icon: const Icon(Icons.settings),
+            )
                 : const SizedBox(width: 0, height: 0,),
           ),
         ],
@@ -156,5 +147,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  
+
 }
