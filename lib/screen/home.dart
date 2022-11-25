@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_world_app/components/playing_bar.dart';
 import 'package:music_world_app/screen/account/view/account.dart';
 import 'package:music_world_app/screen/account/view/setting.dart';
 import 'package:music_world_app/screen/explore/view/explore_page.dart';
+import 'package:music_world_app/screen/home_bloc.dart';
+import 'package:music_world_app/screen/home_state.dart';
 import 'package:music_world_app/screen/search/view/search_page.dart';
 import 'package:music_world_app/screen/radio/view/radio_page.dart';
 import 'package:music_world_app/util/colors.dart';
@@ -9,7 +13,6 @@ import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
 
-import '../components/notifications.dart';
 import '../util/globals.dart';
 import 'home/view/home_page.dart';
 
@@ -21,7 +24,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // late AudioPlayer players = AudioPlayer();
   int index = 0;
   List<Color> itemColor = [
     primaryColor,
@@ -30,14 +32,14 @@ class _MyHomePageState extends State<MyHomePage> {
     neutralColor2,
   ];
 
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  // TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static final screen = [ //TODO: constance
-    Home(),
-    ExplorePage(),
+    const Home(),
+    const ExplorePage(),
     Fm(),
-    AccountPage(),
+    const AccountPage(),
   ];
 
   void _onItemTapped(int _index) {
@@ -113,7 +115,53 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       body: Center(
-        child: screen[index],
+          child: Stack(
+            children: [
+              screen[index],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+                  builder: (BuildContext context, state) {
+                    switch (state.isPlaying) {
+                      case true:
+                        return InkWell(
+                          child: Container(
+                              height: 0.079 * screenHeight,
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                              ),
+                              child: Center(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
+                                  leading: CircleAvatar(
+                                    backgroundImage: AssetImage(assetsAudioPlayer.getCurrentAudioextra["pictures"]),
+                                  ),
+                                  title: Text(
+                                    assetsAudioPlayer.getCurrentAudioTitle,
+                                    style: bodyRoboto2.copyWith(color: neutralColor3),
+                                  ),
+                                  trailing: Container(
+                                    alignment: Alignment.centerRight,
+                                    width: screenWidth * 0.3413,
+                                    child: const PlayingBar(type: 1),
+                                  ),
+                                ),
+                              )
+                          ),
+                          onTap: () {
+                            // TODO: navigate to song page
+                            //Navigate.pushPage(context, const SongPage());
+                          },
+                        );
+                      default:
+                        return const SizedBox(width: 0, height: 0,);
+                    }
+                  },
+
+                ),
+              ),
+            ],
+          )
       ),
 
       bottomNavigationBar: BottomNavigationBar(

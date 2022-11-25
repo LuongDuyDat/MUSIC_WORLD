@@ -5,6 +5,7 @@ import '../repositories/song_repository/models/song.dart';
 import 'globals.dart';
 
 void play(Song song) {
+  Map<String, dynamic> extras = {"pictures": song.picture};
   try {
     assetsAudioPlayer.open(
       Audio(
@@ -12,6 +13,7 @@ void play(Song song) {
         metas: Metas(
           title: song.name,
           artist: song.artist.elementAt(0).name,
+          extra: extras,
           image: MetasImage.asset(song.picture),
         ),
       ),

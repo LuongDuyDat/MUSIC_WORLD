@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_world_app/screen/home_bloc.dart';
 import 'package:music_world_app/screen/login/view/login_page.dart';
+import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/theme.dart';
 
 class App extends StatelessWidget {
@@ -7,9 +10,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const LoginPage(),
-      theme: theme,
+    return BlocProvider(
+      create: (_) => HomeScreenBloc(assetsAudioPlayer: assetsAudioPlayer),
+      child: MaterialApp(
+        home: const LoginPage(),
+        theme: theme,
+      ),
     );
   }
 

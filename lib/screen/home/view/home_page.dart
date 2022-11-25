@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:music_world_app/components/playing_bar.dart';
 import 'package:music_world_app/components/song_tile.dart';
 import 'package:music_world_app/repositories/album_repository/album_repository.dart';
 import 'package:music_world_app/repositories/album_repository/models/album.dart';
@@ -43,7 +42,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double recentMusicHeight = isPlayingSong ? 0.3125 : 0.3906;
+    double recentMusicHeight = 0.3906;
     return Column(
       children: [
         Padding(
@@ -82,68 +81,7 @@ class HomeView extends StatelessWidget {
           height: recentMusicHeight * screenHeight,
           padding: EdgeInsets.only(left: screenWidth * 0.064),
           child: RecentSongList(height: recentMusicHeight,),
-          /*child: ListView(
-            //shrinkWrap: true,
-            //physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              CollectionListTile(
-                leadingAsset: "assets/images/song1.png",
-                songName: "Nice For What",
-                artist: "Avinci John",
-                number: 1,
-              ),
-              CollectionListTile(
-                leadingAsset: "assets/images/song2.png",
-                songName: "Where can I get some ?",
-                artist: "Arian Grande",
-                number: 2,
-              ),
-              CollectionListTile(
-                leadingAsset: "assets/images/song3.png",
-                songName: "Why do we use it ?",
-                artist: "Alan Walker",
-                number: 3,
-              ),
-              CollectionListTile(
-                leadingAsset: "assets/images/song4.png",
-                songName: "Fall Out Boys",
-                artist: "Avinci John",
-                number: 4,
-              ),
-            ],
-          ),*/
         ),
-        isPlayingSong
-            ? InkWell(
-          child: Container(
-              height: 0.079 * screenHeight,
-              decoration: BoxDecoration(
-                color: primaryColor,
-              ),
-              child: Center(
-                child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
-                  leading: const CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/song1.png"),
-                  ),
-                  title: Text(
-                    "Nice For What",
-                    style: bodyRoboto2.copyWith(color: neutralColor3),
-                  ),
-                  trailing: Container(
-                    alignment: Alignment.centerRight,
-                    width: screenWidth * 0.3413,
-                    child: const PlayingBar(type: 1),
-                  ),
-                ),
-              )
-          ),
-          onTap: () {
-            // TODO: navigate to song page
-            //Navigate.pushPage(context, const SongPage());
-          },
-        )
-            : const SizedBox(width: 0, height: 0,)
       ],
     );
   }
