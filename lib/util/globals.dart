@@ -9,7 +9,6 @@ import '../repositories/song_repository/models/song.dart';
 String lang = 'en';
 double screenWidth = 0;
 double screenHeight = 0;
-bool isPlayingSong = true;
 late Song playingSong;
 Box<Artist> a = Hive.box<Artist>('artist');
 Artist account = a.values.toList().elementAt(a.values.toList().length - 1);

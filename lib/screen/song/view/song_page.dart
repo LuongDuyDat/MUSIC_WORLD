@@ -20,7 +20,8 @@ import '../../../util/navigate.dart';
 class SongPage extends StatefulWidget {
   final Song song;
   final int selectedIndex;
-  const SongPage({Key? key, required this.song, this.selectedIndex = 0,}) : super(key: key);
+  final bool? isOpen;
+  const SongPage({Key? key, required this.song, this.selectedIndex = 0, this.isOpen,}) : super(key: key);
 
   @override
   _SongPageState createState() => _SongPageState();
@@ -31,8 +32,11 @@ class _SongPageState extends State<SongPage> {
   @override
   void initState() {
     super.initState();
-    play(widget.song);
-    BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: true));
+    if (widget.isOpen == null) {
+      play(widget.song);
+      BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: true));
+      playingSong = widget.song;
+    }
     selectedIndex = widget.selectedIndex;
   }
 
