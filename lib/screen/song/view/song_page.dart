@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:music_world_app/repositories/song_repository/song_repository.dart';
-import 'package:music_world_app/screen/home_bloc.dart';
-import 'package:music_world_app/screen/home_event.dart';
+import 'package:music_world_app/screen/app_bloc.dart';
+import 'package:music_world_app/screen/app_event.dart';
 import 'package:music_world_app/screen/song/bloc/song_bloc.dart';
 import 'package:music_world_app/screen/song/view/song_view1.dart';
 import 'package:music_world_app/screen/song/view/song_view2.dart';
@@ -128,7 +128,7 @@ class _SongPageState extends State<SongPage> {
             appBar: AppBar(
               backgroundColor: selectedIndex == 1 ? backgroundColor : Colors.transparent,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.keyboard_arrow_down, size: 35,),
                 onPressed: () {
                   Navigate.popPage(context);
                 },

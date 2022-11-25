@@ -1,8 +1,8 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:bloc/bloc.dart';
 
-import 'home_event.dart';
-import 'home_state.dart';
+import 'app_event.dart';
+import 'app_state.dart';
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   HomeScreenBloc({
@@ -18,6 +18,9 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       HomeChangeIsPlaying event,
       Emitter<HomeScreenState> emit,
       ) {
+    if (event.isPlaying == false) {
+      _assetsAudioPlayer.stop();
+    }
     emit(state.copyWith(
       isPlaying: () => event.isPlaying,
     ));

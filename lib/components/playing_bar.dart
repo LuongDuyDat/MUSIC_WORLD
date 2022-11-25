@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_world_app/util/globals.dart';
+
+import '../screen/app_bloc.dart';
+import '../screen/app_event.dart';
 
 class PlayingBar extends StatelessWidget {
   final int type;
-  final void Function()? cancel;
-  const PlayingBar({Key? key, required this.type, this.cancel}) : super(key: key);
+  const PlayingBar({Key? key, required this.type,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,9 @@ class PlayingBar extends StatelessWidget {
                   size: screenWidth * 0.064,
                   color: const Color(0xFF20242F),
                 ),
-                onTap: cancel,
+                onTap: () {
+                  BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: false));
+                },
               ),
       ],
     );
