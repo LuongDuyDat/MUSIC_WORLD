@@ -34,8 +34,8 @@ class _SongPageState extends State<SongPage> {
     super.initState();
     if (widget.isOpen == null) {
       play(widget.song);
-      BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: true));
       playingSong = widget.song;
+      BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: true));
     }
     selectedIndex = widget.selectedIndex;
   }
