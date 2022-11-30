@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_world_app/components/play_bar.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
+import 'package:music_world_app/screen/app_bloc.dart';
+import 'package:music_world_app/screen/app_state.dart';
 import 'package:music_world_app/screen/singer/view/singer_info.dart';
 import 'package:music_world_app/screen/song/bloc/song_bloc.dart';
 import 'package:music_world_app/screen/song/bloc/song_event.dart';
@@ -17,10 +19,9 @@ import '../../../components/notifications.dart';
 
 
 class SongView2 extends StatefulWidget {
-  final Song song;
   final void Function() onNextClick;
   final void Function() onPrevClick;
-  const SongView2({Key? key, required this.song, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
+  const SongView2({Key? key, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
 
   @override
   _SongView1State createState() => _SongView1State();
@@ -54,164 +55,173 @@ class _SongView1State extends State<SongView2> {
       builder: (context, asyncSnapshot) {
         final Duration? duration = asyncSnapshot.data;
         _currentSlideValue  = duration == null ? 0 : duration.inSeconds.toDouble();
-        return Column(
-          children: [
-            SizedBox(height: 0.062 * screenHeight,),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(screenWidth / 4),
-              child: Image.asset(widget.song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
-            ),
-            SizedBox(height: 0.027 * screenHeight,),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 0.1 * screenHeight,
-              ),
-              child: Text(
-                widget.song.name,
-                style: title2.copyWith(color: textPrimaryColor),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 0.01 * screenHeight,),
-            InkWell(
-              child: Text(
-                widget.song.artist.elementAt(0).name,
-                style: subHeadline1.copyWith(color: textPrimaryColor),
-              ),
-              onTap: () {
-                Navigate.pushPage(context, SingerInfo(artist: widget.song.artist.elementAt(0),));
-              },
-            ),
-            SizedBox(height: 0.0246 * screenHeight,),
-            SizedBox(
-              width: 0.64 * screenWidth,
-              child: Text(
-                "It is a long established fact that a reader",
-                style: lyric.copyWith(
-                  color: primaryColor,
-                  height: 1.5,
+        return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+          buildWhen: (previous, current) {
+            return previous.playingSong != current.playingSong;
+          },
+          builder: (context, state) {
+            Song song = state.playingSong.elementAt(state.playingSong.length - 1);
+            return Column(
+              children: [
+                SizedBox(height: 0.062 * screenHeight,),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(screenWidth / 4),
+                  child: Image.asset(song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 0.0332 * screenHeight,),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0.138 * screenWidth),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    child: ImageIcon(
-                      const AssetImage("assets/icons/share_icon.png"),
-                      color: neutralColor1,
-                      size: 20,
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const ShareModal();
-                        },
-                      );
-                    },
+                SizedBox(height: 0.027 * screenHeight,),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 0.1 * screenHeight,
                   ),
-                  InkWell(
-                    child: ImageIcon(
-                      const AssetImage("assets/icons/add_playlist_icon.png"),
-                      color: neutralColor1,
-                      size: 20,
-                    ),
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const Notifications(
-                            width: 200,
-                            text: 'Add this song to My Playlist',
-                          ).build(context));
-                    },
+                  child: Text(
+                    song.name,
+                    style: title2.copyWith(color: textPrimaryColor),
+                    textAlign: TextAlign.center,
                   ),
-                  BlocBuilder<SongBloc, SongState>(
-                    buildWhen: (pre, state) {
-                      return pre.isFavorites != state.isFavorites;
-                    },
-                    builder: (context, state) {
-                      context.read<SongBloc>().add(CheckFavorites(song: widget.song));
-                      return InkWell(
+                ),
+                SizedBox(height: 0.01 * screenHeight,),
+                InkWell(
+                  child: Text(
+                    song.artist.elementAt(0).name,
+                    style: subHeadline1.copyWith(color: textPrimaryColor),
+                  ),
+                  onTap: () {
+                    Navigate.pushPage(context, SingerInfo(artist: song.artist.elementAt(0),));
+                  },
+                ),
+                SizedBox(height: 0.0246 * screenHeight,),
+                SizedBox(
+                  width: 0.64 * screenWidth,
+                  child: Text(
+                    "It is a long established fact that a reader",
+                    style: lyric.copyWith(
+                      color: primaryColor,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: 0.0332 * screenHeight,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0.138 * screenWidth),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
                         child: ImageIcon(
-                          const AssetImage("assets/icons/favorite_icon.png"),
-                          color: state.isFavorites == true ? Colors.red : neutralColor1,
+                          const AssetImage("assets/icons/share_icon.png"),
+                          color: neutralColor1,
                           size: 20,
                         ),
                         onTap: () {
-                          if (state.isFavorites == false) {
-                            context.read<SongBloc>().add(AddFavoriteSong(song: widget.song));
-                          } else {
-                            context.read<SongBloc>().add(RemoveFavoriteSong(song: widget.song));
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const ShareModal();
+                            },
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child: ImageIcon(
+                          const AssetImage("assets/icons/add_playlist_icon.png"),
+                          color: neutralColor1,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const Notifications(
+                                width: 200,
+                                text: 'Add this song to My Playlist',
+                              ).build(context));
+                        },
+                      ),
+                      BlocBuilder<SongBloc, SongState>(
+                          buildWhen: (pre, state) {
+                            return pre.isFavorites != state.isFavorites;
+                          },
+                          builder: (context, state) {
+                            context.read<SongBloc>().add(CheckFavorites(song: song));
+                            return InkWell(
+                              child: ImageIcon(
+                                const AssetImage("assets/icons/favorite_icon.png"),
+                                color: state.isFavorites == true ? Colors.red : neutralColor1,
+                                size: 20,
+                              ),
+                              onTap: () {
+                                if (state.isFavorites == false) {
+                                  context.read<SongBloc>().add(AddFavoriteSong(song: song));
+                                } else {
+                                  context.read<SongBloc>().add(RemoveFavoriteSong(song: song));
+                                }
+                              },
+                            );
                           }
+                      ),
+                      InkWell(
+                        child: ImageIcon(
+                          const AssetImage("assets/icons/download_icon.png"),
+                          color: neutralColor1,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const DownloadModal();
+                            },
+                          );
                         },
-                      );
-                    }
+                      ),
+                    ],
                   ),
-                  InkWell(
-                    child: ImageIcon(
-                      const AssetImage("assets/icons/download_icon.png"),
-                      color: neutralColor1,
-                      size: 20,
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const DownloadModal();
-                        },
-                      );
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
+                  child: Slider(
+                    value: _currentSlideValue,
+                    max: assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble(),
+                    divisions: assetsAudioPlayer.current.value!.audio.duration.inSeconds,
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSlideValue = value;
+                        seek(_currentSlideValue.toInt());
+                      });
                     },
+                    thumbColor: primaryColor,
+                    activeColor: primaryColor,
+                    inactiveColor: neutralColor2,
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
-              child: Slider(
-                value: _currentSlideValue,
-                max: assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble(),
-                divisions: assetsAudioPlayer.current.value!.audio.duration.inSeconds,
-                onChanged: (double value) {
-                  setState(() {
-                    _currentSlideValue = value;
-                    seek(_currentSlideValue.toInt());
-                  });
-                },
-                thumbColor: primaryColor,
-                activeColor: primaryColor,
-                inactiveColor: neutralColor2,
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0613 * screenWidth),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0.0613 * screenWidth),
+                    child: Column(
                       children: [
-                        Text(
-                          convertSecondtoMinutes(_currentSlideValue),
-                          style: lyric.copyWith(color: textPrimaryColor),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              convertSecondtoMinutes(_currentSlideValue),
+                              style: lyric.copyWith(color: textPrimaryColor),
+                            ),
+                            Text(
+                              convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble()),
+                              style: lyric.copyWith(color: textPrimaryColor),
+                            ),
+                          ],
                         ),
-                        Text(
-                          convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble()),
-                          style: lyric.copyWith(color: textPrimaryColor),
-                        ),
+                        SizedBox(height: screenHeight * 0.0246,),
+                        PlayingBar(type: 0, onNextClick: widget.onNextClick, onPrevClick: widget.onPrevClick,),
                       ],
-                    ),
-                    SizedBox(height: screenHeight * 0.0246,),
-                    PlayingBar(type: 0, onNextClick: widget.onNextClick, onPrevClick: widget.onPrevClick,),
-                  ],
-                )
-            ),
-          ],
-        );},
+                    )
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
 
   }

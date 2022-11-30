@@ -1,26 +1,28 @@
+import 'dart:core';
+
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:stack/stack.dart' as a;
 
 import '../repositories/song_repository/models/song.dart';
 
 enum HomeScreenStatus {initial, loading, success, failure}
 
+List<Song> defaultList = [];
+
 class HomeScreenState extends Equatable {
   const HomeScreenState({
     this.playingStatus = HomeScreenStatus.initial,
     this.isPlaying = false,
-    this.playingSong,
+    this.playingSong = const [],
   });
 
   final HomeScreenStatus playingStatus;
   final bool isPlaying;
-  final a.Stack<Song>? playingSong;
+  final List<Song> playingSong;
 
   HomeScreenState copyWith({
     HomeScreenStatus Function()? playingStatus,
     bool Function()? isPlaying,
-    a.Stack<Song> Function()? playingSong,
+    List<Song> Function()? playingSong,
   }) {
     return HomeScreenState(
       playingStatus: playingStatus != null ? playingStatus() : this.playingStatus,

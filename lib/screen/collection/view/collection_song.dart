@@ -15,6 +15,8 @@ import '../../../repositories/artist_repository/models/artist.dart';
 import '../../../util/globals.dart';
 import '../../../util/navigate.dart';
 import '../../../util/text_style.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 
 class CollectionSong extends StatelessWidget {
   final dynamic type;
@@ -183,7 +185,8 @@ class _DownloadSongState extends State<DownloadSong> {
                     number: index + 1,
                     artist: state.downloadSongs.elementAt(index).artist.elementAt(0).name,
                     onTap: () {
-                      Navigate.pushPage(context, SongPage(song: state.downloadSongs.elementAt(index),));
+                      BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.downloadSongs.elementAt(index),));
+                      Navigate.pushPage(context, const SongPage());
                     },
                   );
                 },

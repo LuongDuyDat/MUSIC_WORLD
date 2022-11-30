@@ -16,6 +16,8 @@ import 'package:music_world_app/util/text_style.dart';
 
 import '../../../repositories/album_repository/models/album.dart';
 import '../../../repositories/playlist_repository/models/playlist.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 import '../../song/view/song_page.dart';
 import '../bloc/playlist_bloc/playlist_state.dart';
 
@@ -196,7 +198,8 @@ class PlaylistSong extends StatelessWidget {
                   artist: state.songs.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
                   onTap: () {
-                    Navigate.pushPage(context, SongPage(song: state.songs.elementAt(index)));
+                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
+                    Navigate.pushPage(context, const SongPage());
                   },
                 );
               },
@@ -252,7 +255,8 @@ class AlbumSong extends StatelessWidget {
                   artist: state.songs.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
                   onTap: () {
-                    Navigate.pushPage(context, SongPage(song: state.songs.elementAt(index)));
+                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
+                    Navigate.pushPage(context, const SongPage());
                   },
                 );
               },

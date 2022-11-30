@@ -5,13 +5,11 @@ import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
 
 import '../../../components/play_bar.dart';
-import '../../../repositories/song_repository/models/song.dart';
 
 class SongView3 extends StatefulWidget {
-  final Song song;
   final void Function() onNextClick;
   final void Function() onPrevClick;
-  const SongView3({Key? key, required this.song, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
+  const SongView3({Key? key, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
 
   @override
   _SongView3State createState() => _SongView3State();

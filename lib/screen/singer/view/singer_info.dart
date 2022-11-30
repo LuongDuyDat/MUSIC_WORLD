@@ -16,6 +16,8 @@ import 'package:music_world_app/util/text_style.dart';
 import '../../../components/song_tile.dart';
 import '../../../util/globals.dart';
 import '../../../util/navigate.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 import '../../explore/view/topic.dart';
 
 class SingerInfo extends StatelessWidget {
@@ -222,7 +224,8 @@ class _ListSongState extends State<ListSong> {
               songName: widget.artist.song.elementAt(index).name,
               artist: widget.artist.song.elementAt(index).artist.elementAt(0).name,
               onTap: () {
-                Navigate.pushPage(context, SongPage(song: widget.artist.song.elementAt(index),));
+                BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: widget.artist.song.elementAt(index),));
+                Navigate.pushPage(context, const SongPage());
               },
             );
           },

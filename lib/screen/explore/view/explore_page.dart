@@ -17,6 +17,8 @@ import '../../../util/colors.dart';
 import '../../../util/globals.dart';
 import '../../../util/string.dart';
 import '../../../util/text_style.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -246,7 +248,8 @@ class _SongChartState extends State<SongChart> {
                   artist: state.songChart.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
                   onTap: () {
-                    Navigate.pushPage(context, SongPage(song: state.songChart.elementAt(index),));
+                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songChart.elementAt(index),));
+                    Navigate.pushPage(context, const SongPage());
                   },
                 );
               },

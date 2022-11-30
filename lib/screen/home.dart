@@ -1,24 +1,20 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:music_world_app/components/playing_bar.dart';
 import 'package:music_world_app/screen/account/view/account.dart';
 import 'package:music_world_app/screen/account/view/setting.dart';
+import 'package:music_world_app/screen/app_event.dart';
 import 'package:music_world_app/screen/explore/view/explore_page.dart';
 import 'package:music_world_app/screen/app_bloc.dart';
 import 'package:music_world_app/screen/app_state.dart';
 import 'package:music_world_app/screen/search/view/search_page.dart';
 import 'package:music_world_app/screen/radio/view/radio_page.dart';
 import 'package:music_world_app/screen/song/view/song_page.dart';
-import 'package:music_world_app/util/audio.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
 
-import '../repositories/song_repository/models/song.dart';
 import '../util/globals.dart';
 import 'home/view/home_page.dart';
 
@@ -41,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // static const TextStyle optionStyle =
   // TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static final screen = [ //TODO: constance
+  static final screen = [
     const Home(),
     const ExplorePage(),
     Fm(),
@@ -54,54 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
       itemColor[_index] = primaryColor;
       index = _index;
     });
-  }
-
-  void onNextClick() {
-    Box songBox = Hive.box<Song>('song');
-    var items = songBox.values.toList();
-    int resultI = -1;
-    for (int i = 0; i < items.length; i++) {
-      if (playingSong.key == items[i].key) {
-        resultI = i;
-        break;
-      }
-    }
-    int temp = resultI;
-    Random rand = Random();
-    if (shuffleSingle == 0) {
-      resultI = (resultI + 1) % items.length;
-    } else {
-      int index = resultI;
-      while (index == resultI && items.length != 1) {
-        index = rand.nextInt(items.length);
-      }
-      resultI = index;
-    }
-    prevSong[resultI] = temp;
-    play(items[resultI]);
-    playingSong = items[resultI];
-  }
-
-  void onPrevClick() {
-    Box songBox = Hive.box<Song>('song');
-    var items = songBox.values.toList();
-    int resultI = -1;
-    for (int i = 0; i < items.length; i++) {
-      if (playingSong.key == items[i].key) {
-        resultI = i;
-        break;
-      }
-    }
-    if (shuffleSingle == 0) {
-      resultI = (resultI - 1) % items.length;
-      if (resultI < 0) {
-        resultI += items.length;
-      }
-    } else {
-      resultI = prevSong[resultI];
-    }
-    play(items[resultI]);
-    playingSong = items[resultI];
   }
 
   @override
@@ -176,6 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+                  buildWhen: (previous, current) {
+                   return previous.playingSong != current.playingSong || previous.isPlaying != current.isPlaying;
+                  },
                   builder: (BuildContext context, state) {
                     switch (state.isPlaying) {
                       case true:
@@ -189,22 +140,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
                                   leading: CircleAvatar(
-                                    backgroundImage: AssetImage(assetsAudioPlayer.getCurrentAudioextra["pictures"]),
+                                    backgroundImage: AssetImage(state.playingSong.elementAt(state.playingSong.length - 1).picture),
                                   ),
                                   title: Text(
-                                    assetsAudioPlayer.getCurrentAudioTitle,
+                                    state.playingSong.elementAt(state.playingSong.length - 1).name,
                                     style: bodyRoboto2.copyWith(color: neutralColor3),
                                   ),
                                   trailing: Container(
                                     alignment: Alignment.centerRight,
                                     width: screenWidth * 0.3413,
-                                    child: PlayingBar(type: 1, onPrevClick: onPrevClick, onNextClick: onNextClick,),
+                                    child: PlayingBar(
+                                      type: 1,
+                                      onPrevClick: () {
+                                        BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
+                                      },
+                                      onNextClick: () {
+                                        BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
                           ),
                           onTap: () {
-                            Navigate.pushPage(context, SongPage(song: playingSong, selectedIndex: 1, isOpen: true,));
+                            Navigate.pushPage(context, const SongPage(selectedIndex: 1,));
                           },
                         );
                       default:

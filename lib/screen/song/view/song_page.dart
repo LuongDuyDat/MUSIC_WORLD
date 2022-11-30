@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:music_world_app/repositories/song_repository/song_repository.dart';
-import 'package:music_world_app/screen/app_bloc.dart';
-import 'package:music_world_app/screen/app_event.dart';
 import 'package:music_world_app/screen/song/bloc/song_bloc.dart';
 import 'package:music_world_app/screen/song/view/song_view1.dart';
 import 'package:music_world_app/screen/song/view/song_view2.dart';
@@ -14,14 +10,13 @@ import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
 
 import '../../../repositories/song_repository/models/song.dart';
-import '../../../util/audio.dart';
 import '../../../util/navigate.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 
 class SongPage extends StatefulWidget {
-  final Song song;
   final int selectedIndex;
-  final bool? isOpen;
-  const SongPage({Key? key, required this.song, this.selectedIndex = 0, this.isOpen,}) : super(key: key);
+  const SongPage({Key? key, this.selectedIndex = 0,}) : super(key: key);
 
   @override
   _SongPageState createState() => _SongPageState();
@@ -32,66 +27,23 @@ class _SongPageState extends State<SongPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.isOpen == null) {
-      play(widget.song);
-      playingSong = widget.song;
-      BlocProvider.of<HomeScreenBloc>(context).add(const HomeChangeIsPlaying(isPlaying: true));
-    }
     selectedIndex = widget.selectedIndex;
   }
 
   void onNextClick() {
-    Box songBox = Hive.box<Song>('song');
-    var items = songBox.values.toList();
-    int resultI = -1;
-    for (int i = 0; i < items.length; i++) {
-      if (widget.song.key == items[i].key) {
-        resultI = i;
-        break;
-      }
-    }
-    int temp = resultI;
-    Random rand = Random();
-    if (shuffleSingle == 0) {
-      resultI = (resultI + 1) % items.length;
-    } else {
-      int index = resultI;
-      while (index == resultI && items.length != 1) {
-        index = rand.nextInt(items.length);
-      }
-      resultI = index;
-    }
-    prevSong[resultI] = temp;
-    Navigate.pushPageReplacement(context, SongPage(song: items[resultI], selectedIndex: 1,));
+    BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
   }
 
   void onPrevClick() {
-    Box songBox = Hive.box<Song>('song');
-    var items = songBox.values.toList();
-    int resultI = -1;
-    for (int i = 0; i < items.length; i++) {
-      if (widget.song.key == items[i].key) {
-        resultI = i;
-        break;
-      }
-    }
-    if (shuffleSingle == 0) {
-      resultI = (resultI - 1) % items.length;
-      if (resultI < 0) {
-        resultI += items.length;
-      }
-    } else {
-      resultI = prevSong[resultI];
-    }
-    Navigate.pushPageReplacement(context, SongPage(song: items[resultI], selectedIndex: 1,));
+    BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = [
-      SongView1(song: widget.song,),
-      SongView2(song: widget.song, onNextClick: onNextClick, onPrevClick: onPrevClick,),
-      SongView3(song: widget.song, onNextClick: onNextClick, onPrevClick: onPrevClick,),
+      const SongView1(),
+      SongView2(onNextClick: onNextClick, onPrevClick: onPrevClick,),
+      SongView3(onNextClick: onNextClick, onPrevClick: onPrevClick,),
     ];
     Box<Song> songBox = Hive.box<Song>('song');
     double distance = 0;

@@ -19,6 +19,8 @@ import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/text_style.dart';
 
 import '../../../util/string.dart';
+import '../../app_bloc.dart';
+import '../../app_event.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -200,7 +202,8 @@ class _RecentSongListState extends State<RecentSongList> {
                   artist: state.recentSongs.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
                   onTap: () {
-                    Navigate.pushPage(context, SongPage(song: state.recentSongs.elementAt(index)));
+                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.recentSongs.elementAt(index),));
+                    Navigate.pushPage(context, const SongPage());
                   },
                 );
               },
