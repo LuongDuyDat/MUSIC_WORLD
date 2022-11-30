@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:music_world_app/app.dart';
+import 'package:music_world_app/app/view/app.dart';
 import 'package:music_world_app/bloc_observer.dart';
 import 'package:music_world_app/repositories/album_repository/models/album.dart';
 import 'package:music_world_app/repositories/artist_repository/models/artist.dart';

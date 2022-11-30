@@ -19,8 +19,8 @@ import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/text_style.dart';
 
 import '../../../util/string.dart';
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

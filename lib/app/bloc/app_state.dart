@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:equatable/equatable.dart';
 
-import '../repositories/song_repository/models/song.dart';
+import '../../repositories/song_repository/models/song.dart';
 
 enum HomeScreenStatus {initial, loading, success, failure}
 

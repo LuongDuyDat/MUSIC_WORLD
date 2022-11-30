@@ -16,8 +16,8 @@ import 'package:music_world_app/util/text_style.dart';
 
 import '../../../repositories/album_repository/models/album.dart';
 import '../../../repositories/playlist_repository/models/playlist.dart';
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 import '../../song/view/song_page.dart';
 import '../bloc/playlist_bloc/playlist_state.dart';
 

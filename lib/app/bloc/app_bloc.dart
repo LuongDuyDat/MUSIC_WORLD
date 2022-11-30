@@ -4,9 +4,9 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 
-import '../repositories/song_repository/models/song.dart';
-import '../util/audio.dart';
-import '../util/globals.dart';
+import '../../repositories/song_repository/models/song.dart';
+import '../../util/audio.dart';
+import '../../util/globals.dart';
 import 'app_event.dart';
 import 'app_state.dart';
 

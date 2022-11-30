@@ -12,8 +12,8 @@ import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
 
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 
 class SearchAll extends StatelessWidget {
   const SearchAll({Key? key}) : super(key: key);

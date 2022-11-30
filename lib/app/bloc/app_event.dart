@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../repositories/song_repository/models/song.dart';
+import '../../repositories/song_repository/models/song.dart';
 
 abstract class HomeScreenEvent extends Equatable {
   const HomeScreenEvent();

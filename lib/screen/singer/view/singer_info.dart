@@ -16,8 +16,8 @@ import 'package:music_world_app/util/text_style.dart';
 import '../../../components/song_tile.dart';
 import '../../../util/globals.dart';
 import '../../../util/navigate.dart';
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 import '../../explore/view/topic.dart';
 
 class SingerInfo extends StatelessWidget {

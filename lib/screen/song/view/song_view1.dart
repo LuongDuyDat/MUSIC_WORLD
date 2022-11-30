@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_world_app/screen/app_bloc.dart';
-import 'package:music_world_app/screen/app_event.dart';
-import 'package:music_world_app/screen/app_state.dart';
+import 'package:music_world_app/app/bloc/app_bloc.dart';
+import 'package:music_world_app/app/bloc/app_event.dart';
+import 'package:music_world_app/app/bloc/app_state.dart';
 import 'package:music_world_app/screen/singer/view/singer_info.dart';
 import 'package:music_world_app/screen/song/bloc/song_bloc.dart';
 import 'package:music_world_app/screen/song/bloc/song_event.dart';

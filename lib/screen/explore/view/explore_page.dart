@@ -17,8 +17,8 @@ import '../../../util/colors.dart';
 import '../../../util/globals.dart';
 import '../../../util/string.dart';
 import '../../../util/text_style.dart';
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({Key? key}) : super(key: key);

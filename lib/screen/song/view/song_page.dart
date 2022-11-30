@@ -11,8 +11,8 @@ import 'package:music_world_app/util/globals.dart';
 
 import '../../../repositories/song_repository/models/song.dart';
 import '../../../util/navigate.dart';
-import '../../app_bloc.dart';
-import '../../app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/bloc/app_event.dart';
 
 class SongPage extends StatefulWidget {
   final int selectedIndex;
