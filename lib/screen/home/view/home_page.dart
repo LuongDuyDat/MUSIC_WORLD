@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/text_style.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../../util/string.dart';
 import '../../../app/bloc/app_bloc.dart';
@@ -95,6 +97,21 @@ class NewAlbumSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    Future<Size> _calculateImageDimension(String image1) {
+      Completer<Size> completer = Completer();
+      Image image = Image.asset(image1);
+      image.image.resolve(const ImageConfiguration()).addListener(
+        ImageStreamListener(
+              (ImageInfo image, bool synchronousCall) {
+            var myImage = image.image;
+            Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+            completer.complete(size);
+          },
+        ),
+      );
+      return completer.future;
+    }
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         switch(state.newAlbumStatus) {
@@ -119,11 +136,50 @@ class NewAlbumSlider extends StatelessWidget {
                 viewportFraction: 0.6,
               ),
               itemBuilder: (BuildContext context, int index, int realIndex) {
-                return InkWell(
-                  child: ImageSlideBar(asset: state.newAlbums[index].picture, title: state.newAlbums[index].name,
-                    singer: state.newAlbums[index].artist.elementAt(0).name,),
-                  onTap: () {
-                    Navigate.pushPage(context, Topic(type: "Album", album: state.newAlbums[index],));
+                return FutureBuilder<Size>(
+                  future: _calculateImageDimension(state.newAlbums[index].picture),
+                  builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+                    if (snapshot.hasData) {
+                      double width = snapshot.data!.width;
+                      double height = snapshot.data!.height;
+                      return FutureBuilder<PaletteGenerator>(
+                        future: PaletteGenerator.fromImageProvider(
+                          AssetImage(state.newAlbums[index].picture),
+                          size: Size(width, height),
+                          region: Offset(width * 0.1, height * 0.8)
+                          & Size(0.9 * width, 0.2 * height),
+                        ),
+                        builder: (BuildContext context, AsyncSnapshot<PaletteGenerator> snapshot) {
+                          if (snapshot.hasData) {
+                            PaletteGenerator paletteGenerator = snapshot.data!;
+                            Color dominantColor = paletteGenerator.dominantColor?.color ?? Colors.black;
+                            return InkWell(
+                              child: ImageSlideBar(
+                                asset: state.newAlbums[index].picture,
+                                title: state.newAlbums[index].name,
+                                singer: state.newAlbums[index].artist.elementAt(0).name,
+                                color: dominantColor.computeLuminance() > 0.5 ? Colors.black : textPrimaryColor,
+                              ),
+                              onTap: () {
+                                Navigate.pushPage(context, Topic(type: "Album", album: state.newAlbums[index],));
+                              },
+                            );
+                          }
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   },
                 );
               },
@@ -229,11 +285,13 @@ class ImageSlideBar extends StatelessWidget {
   final String asset;
   final String title;
   final String singer;
+  final Color color;
   const ImageSlideBar({
     Key? key,
     required this.asset,
     required this.title,
     required this.singer,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -250,22 +308,15 @@ class ImageSlideBar extends StatelessWidget {
               Text(
                 title,
                 style: bodyRegular3.copyWith(
-                  color: textPrimaryColor,
+                  color: color,
                   fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      color: neutralColor3,
-                      blurRadius: 8,
-                      offset: const Offset(4.0, 4.0),
-                    )
-                  ],
                 ),
               ),
               SizedBox(height: screenHeight * 0.002,),
               Text(
                 singer,
                 style: bodyRegular3.copyWith(
-                  color: textPrimaryColor,
+                  color: color,
                   shadows: [
                     Shadow(
                       color: neutralColor3,
