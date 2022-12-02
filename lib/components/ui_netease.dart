@@ -5,43 +5,44 @@ import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:music_world_app/util/colors.dart';
 
 class UiNetease extends UINetease {
-  @override
-  double defaultSize;
-  double defaultExtSize;
-  double otherMainSize;
-  double bias;
-  double lineGap;
-  double inlineGap;
-  LyricAlign lyricAlign;
-  LyricBaseLine lyricBaseLine;
-  bool highlight;
-  HighlightDirection highlightDirection;
 
-  UiNetease(
-      {this.defaultSize = 18,
-        this.defaultExtSize = 14,
-        this.otherMainSize = 16,
-        this.bias = 0.5,
-        this.lineGap = 25,
-        this.inlineGap = 25,
-        this.lyricAlign = LyricAlign.CENTER,
-        this.lyricBaseLine = LyricBaseLine.CENTER,
-        this.highlight = true,
-        this.highlightDirection = HighlightDirection.LTR});
-
-  UiNetease.clone(UiNetease uiNetease)
-      : this(
-    defaultSize: uiNetease.defaultSize,
-    defaultExtSize: uiNetease.defaultExtSize,
-    otherMainSize: uiNetease.otherMainSize,
-    bias: uiNetease.bias,
-    lineGap: uiNetease.lineGap,
-    inlineGap: uiNetease.inlineGap,
-    lyricAlign: uiNetease.lyricAlign,
-    lyricBaseLine: uiNetease.lyricBaseLine,
-    highlight: uiNetease.highlight,
-    highlightDirection: uiNetease.highlightDirection,
+  UiNetease({
+    defaultSize,
+    defaultExtSize,
+    otherMainSize,
+    bias,
+    lineGap,
+    inlineGap,
+    lyricAlign,
+    lyricBaseLine,
+    highlight,
+    highlightDirection
+  }) : super(
+    defaultSize: defaultExtSize ?? 18.toDouble(),
+    defaultExtSize: defaultExtSize ?? 14.toDouble(),
+    otherMainSize: otherMainSize ?? 16.toDouble(),
+    bias: bias ?? 0.5,
+    lineGap: lineGap ?? 25.toDouble(),
+    inlineGap: inlineGap ?? 25.toDouble(),
+    lyricAlign: lyricAlign ??  LyricAlign.CENTER,
+    lyricBaseLine: lyricBaseLine ?? LyricBaseLine.CENTER,
+    highlight: highlight ?? true,
+    highlightDirection: highlightDirection ?? HighlightDirection.LTR,
   );
+
+  // UiNetease.clone(UiNetease uiNetease)
+  //     : this(
+  //   defaultSize: uiNetease.defaultSize,
+  //   defaultExtSize: uiNetease.defaultExtSize,
+  //   otherMainSize: uiNetease.otherMainSize,
+  //   bias: uiNetease.bias,
+  //   lineGap: uiNetease.lineGap,
+  //   inlineGap: uiNetease.inlineGap,
+  //   lyricAlign: uiNetease.lyricAlign,
+  //   lyricBaseLine: uiNetease.lyricBaseLine,
+  //   highlight: uiNetease.highlight,
+  //   highlightDirection: uiNetease.highlightDirection,
+  // );
 
   @override
   TextStyle getPlayingExtTextStyle() =>

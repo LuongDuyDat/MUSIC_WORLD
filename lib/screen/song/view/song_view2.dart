@@ -455,7 +455,7 @@ class LyricLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var lyricUI = UiNetease(defaultSize: 16, otherMainSize: 16);
+    var lyricUI = UiNetease(defaultSize: 16.0, otherMainSize: 16.0);
     return StreamBuilder<bool>(
       stream: assetsAudioPlayer.isPlaying,
       builder: (context, snapshot) {
