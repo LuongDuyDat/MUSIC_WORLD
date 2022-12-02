@@ -5,8 +5,21 @@ import 'package:music_world_app/screen/login/view/login_page.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/theme.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AppState();
+
+}
+
+class _AppState extends State<App> {
+
+  @override
+  void dispose() {
+    super.dispose();
+    assetsAudioPlayer.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
