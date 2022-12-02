@@ -259,7 +259,7 @@ class _RecentSongListState extends State<RecentSongList> {
                   number: index + 1,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.recentSongs.elementAt(index),));
-                    Navigate.pushPage(context, const SongPage());
+                    Navigate.pushPage(context, const SongPage(), dialog: true);
                   },
                 );
               },

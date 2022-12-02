@@ -177,7 +177,7 @@ class _FmState extends State<Fm> {
   Future<void> _navigate(BuildContext context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FmPlayer(fm: fm, index: id)),
+      MaterialPageRoute(builder: (context) => FmPlayer(fm: fm, index: id), fullscreenDialog: true),
     );
     setState(() {
       id = result;

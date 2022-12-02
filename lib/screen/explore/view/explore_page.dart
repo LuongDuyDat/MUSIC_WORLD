@@ -249,7 +249,7 @@ class _SongChartState extends State<SongChart> {
                   number: index + 1,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songChart.elementAt(index),));
-                    Navigate.pushPage(context, const SongPage());
+                    Navigate.pushPage(context, const SongPage(), dialog: true);
                   },
                 );
               },

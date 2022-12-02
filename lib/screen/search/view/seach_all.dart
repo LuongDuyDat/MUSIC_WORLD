@@ -222,7 +222,7 @@ class SearchSongList extends StatelessWidget {
                   large: 40,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
-                    Navigate.pushPage(context, const SongPage());
+                    Navigate.pushPage(context, const SongPage(), dialog: true,);
                   },
                 );
               },

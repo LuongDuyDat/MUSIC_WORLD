@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               )
                           ),
                           onTap: () {
-                            Navigate.pushPage(context, const SongPage(selectedIndex: 1,));
+                            Navigate.pushPage(context, const SongPage(selectedIndex: 1,), dialog: true);
                           },
                         );
                       default:
