@@ -20,6 +20,12 @@ class _FmState extends State<FmPlayer> {
   late List fmList = widget.fm;
 
   @override
+  void dispose() {
+    super.dispose();
+    assetsAudioPlayer.stop();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +36,7 @@ class _FmState extends State<FmPlayer> {
           },
         ),
         title: const Text("Radio"),
-        backgroundColor: Color(0xFF0e0b1f),
+        backgroundColor: const Color(0xFF0e0b1f),
       ),
       body: Center(
         child: Column(
@@ -59,7 +65,7 @@ class _FmState extends State<FmPlayer> {
                 ),
               ),
               const SizedBox(height: 30),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width / 1.5,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,6 +82,7 @@ class _FmState extends State<FmPlayer> {
                           index = fmList.length - 1;
                         }
                         try {
+                          assetsAudioPlayer.stop();
                           assetsAudioPlayer.open(
                             Audio.liveStream(
                               fmList[index].split("::")[0],
@@ -126,6 +133,7 @@ class _FmState extends State<FmPlayer> {
                           index = 0;
                         }
                         try {
+                          assetsAudioPlayer.stop();
                           assetsAudioPlayer.open(
                             Audio.liveStream(
                               fmList[index].split("::")[0],

@@ -4,8 +4,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:hive/hive.dart';
 import 'package:music_world_app/repositories/artist_repository/models/artist.dart';
 
-import '../repositories/song_repository/models/song.dart';
-
 String lang = 'en';
 double screenWidth = 0;
 double screenHeight = 0;

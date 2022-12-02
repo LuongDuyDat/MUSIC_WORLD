@@ -9,7 +9,7 @@ import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
 
 class Fm extends StatefulWidget {
-  Fm({Key? key}) : super(key: key);
+  const Fm({Key? key}) : super(key: key);
 
   @override
   State<Fm> createState() => _FmState();
@@ -113,7 +113,7 @@ class _FmState extends State<Fm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   index < 9 ? Text('0' + (index+1).toString(), style: bodyRoboto2.copyWith(color: textPrimaryColor),)
                       : Text((index+1).toString(), style: bodyRoboto2.copyWith(color: textPrimaryColor),),
                   const SizedBox(width: 20,),
