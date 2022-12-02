@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lyric/lyrics_model_builder.dart';
+import 'package:flutter_lyric/lyrics_reader_model.dart';
+import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:music_world_app/components/play_bar.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
 import 'package:music_world_app/app/bloc/app_bloc.dart';
@@ -16,6 +20,7 @@ import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
 
 import '../../../components/notifications.dart';
+import '../../../components/ui_netease.dart';
 
 
 class SongView2 extends StatefulWidget {
@@ -24,11 +29,12 @@ class SongView2 extends StatefulWidget {
   const SongView2({Key? key, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
 
   @override
-  _SongView1State createState() => _SongView1State();
+  _SongView2State createState() => _SongView2State();
 }
 
-class _SongView1State extends State<SongView2> {
+class _SongView2State extends State<SongView2> {
   double _currentSlideValue = 0;
+  int _playProgress = 0;
   @override
   void initState() {
     super.initState();
@@ -48,6 +54,11 @@ class _SongView1State extends State<SongView2> {
     return result;
   }
 
+  Future<String> getString(String lyricsPath) async {
+    final content = await rootBundle.loadString(lyricsPath);
+    return content;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration>(
@@ -55,6 +66,7 @@ class _SongView1State extends State<SongView2> {
       builder: (context, asyncSnapshot) {
         final Duration? duration = asyncSnapshot.data;
         _currentSlideValue  = duration == null ? 0 : duration.inSeconds.toDouble();
+        _playProgress  = duration == null ? 0 : duration.inMilliseconds.toInt();
         return BlocBuilder<HomeScreenBloc, HomeScreenState>(
           buildWhen: (previous, current) {
             return previous.playingSong != current.playingSong;
@@ -90,16 +102,18 @@ class _SongView1State extends State<SongView2> {
                   },
                 ),
                 SizedBox(height: 0.0246 * screenHeight,),
-                SizedBox(
-                  width: 0.64 * screenWidth,
-                  child: Text(
-                    "It is a long established fact that a reader",
-                    style: lyric.copyWith(
-                      color: primaryColor,
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                FutureBuilder<String>(
+                  future: getString(song.lyricPath),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      String lyrics = snapshot.data!;
+                      var lyricModel = LyricsModelBuilder.create()
+                          .bindLyricToMain(lyrics)
+                          .getModel();
+                      return LyricLine(model: lyricModel, progress: _playProgress);
+                    }
+                    return const Center();
+                  },
                 ),
                 SizedBox(height: 0.0332 * screenHeight,),
                 Padding(
@@ -187,6 +201,7 @@ class _SongView1State extends State<SongView2> {
                     onChanged: (double value) {
                       setState(() {
                         _currentSlideValue = value;
+                        _playProgress = (value * 1000).toInt();
                         seek(_currentSlideValue.toInt());
                       });
                     },
@@ -424,6 +439,45 @@ class ShareModal extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+}
+
+class LyricLine extends StatelessWidget {
+  const LyricLine({
+    Key? key,
+    required this.model,
+    required this.progress,
+  }) : super(key: key);
+  final int progress;
+  final LyricsReaderModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    var lyricUI = UiNetease(defaultSize: 16, otherMainSize: 16);
+    return StreamBuilder<bool>(
+      stream: assetsAudioPlayer.isPlaying,
+      builder: (context, snapshot) {
+        bool playing = snapshot.data ?? false;
+        return SizedBox(
+            width: 0.64 * screenWidth,
+            child: LyricsReader(
+              padding: EdgeInsets.symmetric(horizontal: 0.01 * screenWidth, vertical: 0),
+              model: model,
+              position: progress,
+              lyricUi: lyricUI,
+              playing: playing,
+              size: Size(double.infinity, screenHeight * 0.05),
+              emptyBuilder: () => Center(
+                child: Text(
+                  "No lyrics",
+                  style: lyricUI.getOtherMainTextStyle(),
+                ),
+              ),
+            )
+        );
+      },
     );
   }
 

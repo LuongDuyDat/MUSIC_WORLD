@@ -19,6 +19,8 @@ class Song extends HiveObject {
   final int listenNumber;
   @HiveField(6)
   final DateTime createAt;
+  @HiveField(7)
+  final String lyricPath;
 
   Song({
     required this.name,
@@ -28,5 +30,6 @@ class Song extends HiveObject {
     required this.picture,
     required this.listenNumber,
     required this.createAt,
+    required this.lyricPath,
   });
 }

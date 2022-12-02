@@ -92,6 +92,7 @@
     picture: "assets/images/song/roinguoithuongcunghoanguoidung_cover.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Roi_Nguoi_Thuong_Cung_Hoa_Nguoi_Dung.lrc',
   );
   Song enxkr = Song(
     name: "Em ngày xưa khác rồi",
@@ -101,6 +102,7 @@
     picture: "assets/images/song/emngayxuakhacroi.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Em_Ngay_Xua_Khac_Roi.lrc',
   );
 //album: Ngay troi ve phia cu
   Song hnmlb = Song(
@@ -111,6 +113,7 @@
     picture: "assets/images/song/ngay_troi_ve_phia_cu.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Ha_Noi_Mua_La_Bay.lrc',
   );
   Song pkm = Song(
     name: "Phố Không Mùa",
@@ -120,6 +123,7 @@
     picture: "assets/images/song/ngay_troi_ve_phia_cu.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Pho_Khong_Mua.lrc',
   );
   Song hmm = Song(
     name: "Hẹn Một Mai",
@@ -129,6 +133,7 @@
     picture: "assets/images/song/hen_mot_mai.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Hen_Mot_Mai.lrc',
   );
 //album Chung ta
   Song ctcht = Song(
@@ -139,6 +144,7 @@
     picture: "assets/images/song/chung_ta_cua_hien_tai.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Chung_Ta_Cua_Hien_Tai.lrc',
   );
 //album: Sky Tour
   Song cadsv = Song(
@@ -149,6 +155,7 @@
     picture: "assets/images/song/chac_ai_do_se_ve.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Chac_Ai_Do_Se_Ve.lrc'
   );
   Song ctktvn = Song(
     name: "Chúng ta không thuộc về nhau",
@@ -158,6 +165,7 @@
     picture: "assets/images/song/chung_ta_khong_thuoc_ve_nhau.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'assets/lyrics/Chung_Ta_Khong_Thuoc_Ve_Nhau.lrc'
   );
   Song cnd = Song(
     name: "Chạy ngay đi",
@@ -167,6 +175,7 @@
     picture: "assets/images/song/chay_ngay_di.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
+    lyricPath: 'Chay_Ngay_Di.lrc'
   );
   Album ntvpc =  Album(
     name: "Ngày trôi về phía cũ",
