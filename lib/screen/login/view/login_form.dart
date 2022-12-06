@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:music_world_app/components/password_field.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../components/button.dart';
 import '../../../components/input_field.dart';
@@ -18,6 +20,9 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final passwordController = TextEditingController();
+
     return Column(
       children: [
         SizedBox(height: screenHeight * 0.086,),
@@ -26,11 +31,7 @@ class LoginForm extends StatelessWidget {
           hintText: emailString,
         ),
         SizedBox(height: screenHeight * 0.044,),
-        Input(
-          icon: "assets/icons/password_icon.png",
-          hintText: passWordString,
-          suffixIcon: "assets/icons/show_pass_icon.png",
-        ),
+        InputPassword(myController: passwordController),
         SizedBox(height: screenHeight * 0.044,),
         Align(
           alignment: Alignment.centerRight,

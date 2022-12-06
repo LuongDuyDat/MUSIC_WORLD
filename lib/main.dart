@@ -7,8 +7,14 @@ import 'package:music_world_app/repositories/album_repository/models/album.dart'
 import 'package:music_world_app/repositories/artist_repository/models/artist.dart';
 import 'package:music_world_app/repositories/playlist_repository/models/playlist.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Bloc.observer = SimpleBlocObserver();
   await Hive.initFlutter();
   Hive.registerAdapter(ArtistAdapter());
