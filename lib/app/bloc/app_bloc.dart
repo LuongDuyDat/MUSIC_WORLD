@@ -24,6 +24,8 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     on<HomeOnClickSong>(_onClickSong);
     on<HomePlayPlaylist>(_onPlayPlaylist);
     on<HomeAddSong>(_onAddSong);
+    on<HomeNextTopicClick>(_onNextTopicClick);
+    on<HomePrevTopicClick>(_onPrevTopicClick);
   }
 
   @override
@@ -145,6 +147,20 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       playingPlaylist: () => event.playlist,
       isPlaying: () => true,
     ));
+  }
+
+  void _onNextTopicClick (
+      HomeNextTopicClick event,
+      Emitter<HomeScreenState> emit,
+      ) {
+    _assetsAudioPlayer.next();
+  }
+
+  void _onPrevTopicClick (
+      HomePrevTopicClick event,
+      Emitter<HomeScreenState> emit,
+      ) {
+    _assetsAudioPlayer.previous();
   }
 
 }

@@ -152,10 +152,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: PlayingBar(
                                       type: 1,
                                       onPrevClick: () {
-                                        BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
+                                        if (state.playingPlaylist == null && state.playingAlbum == null) {
+                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
+                                        } else {
+                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevTopicClick());
+                                        }
                                       },
                                       onNextClick: () {
-                                        BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
+                                        if (state.playingPlaylist == null && state.playingAlbum == null) {
+                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
+                                        } else {
+                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextTopicClick());
+                                        }
                                       },
                                     ),
                                   ),

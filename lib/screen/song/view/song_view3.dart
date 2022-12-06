@@ -16,9 +16,7 @@ import '../../../repositories/song_repository/models/song.dart';
 import '../../../util/audio.dart';
 
 class SongView3 extends StatefulWidget {
-  final void Function() onNextClick;
-  final void Function() onPrevClick;
-  const SongView3({Key? key, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
+  const SongView3({Key? key,}) : super(key: key);
 
   @override
   _SongView3State createState() => _SongView3State();
@@ -125,7 +123,7 @@ class _SongView3State extends State<SongView3> {
                           ],
                         ),
                         SizedBox(height: screenHeight * 0.0246,),
-                        PlayingBar(type: 0, onNextClick: widget.onNextClick, onPrevClick: widget.onPrevClick,),
+                        const PlayingBar(type: 0,),
                       ],
                     )
                 ),

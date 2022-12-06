@@ -30,20 +30,12 @@ class _SongPageState extends State<SongPage> {
     selectedIndex = widget.selectedIndex;
   }
 
-  void onNextClick() {
-    BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
-  }
-
-  void onPrevClick() {
-    BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
-  }
-
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = [
       const SongView1(),
-      SongView2(onNextClick: onNextClick, onPrevClick: onPrevClick,),
-      SongView3(onNextClick: onNextClick, onPrevClick: onPrevClick,),
+      const SongView2(),
+      const SongView3(),
     ];
     Box<Song> songBox = Hive.box<Song>('song');
     double distance = 0;

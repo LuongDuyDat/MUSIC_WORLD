@@ -129,8 +129,6 @@ class _TopicViewState extends State<TopicView> {
                     //todo: playlist
                     PlayingBar(
                       type: 1,
-                      onNextClick: () {},
-                      onPrevClick: () {},
                       playlist: widget.playlist,
                       album: widget.album,
                     ),

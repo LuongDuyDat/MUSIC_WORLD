@@ -13,13 +13,9 @@ class PlayingBar extends StatefulWidget {
   final int type;
   final my.Playlist? playlist;
   final Album? album;
-  final void Function() onNextClick;
-  final void Function() onPrevClick;
   const PlayingBar({
     Key? key,
     required this.type,
-    required this.onNextClick,
-    required this.onPrevClick,
     this.playlist,
     this.album,
   }) : super(key: key);
@@ -86,7 +82,13 @@ class _PlayingBarState extends State<PlayingBar> {
                     AssetImage("assets/icons/skip_prev_icon.png"),
                     color: Color(0xFFEEEEEE),
                   ),
-                  onTap: widget.onPrevClick,
+                  onTap: () {
+                    if (widget.type == 0) {
+                      BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
+                    } else if (widget.type == 1 && _isPlayingTopic == true) {
+                      BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevTopicClick());
+                    }
+                  },
                 ),
                 InkWell(
                   child: widget.type == 0 ?
@@ -115,7 +117,6 @@ class _PlayingBarState extends State<PlayingBar> {
                     ),
                   ),
                   onTap: () {
-                    print(1);
                     if (widget.type == 0) {
                       assetsAudioPlayer.playOrPause();
                     } else {
@@ -144,7 +145,13 @@ class _PlayingBarState extends State<PlayingBar> {
                     AssetImage("assets/icons/skip_next_icon.png"),
                     color: Color(0xFFEEEEEE),
                   ),
-                  onTap: widget.onNextClick,
+                  onTap: () {
+                    if (widget.type == 0) {
+                      BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
+                    } else if (widget.type == 1 && _isPlayingTopic == true) {
+                      BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextTopicClick());
+                    }
+                  },
                 ),
                 widget.type == 0 ?
                 InkWell(

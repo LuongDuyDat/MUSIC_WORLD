@@ -24,9 +24,7 @@ import '../../../components/ui_netease.dart';
 
 
 class SongView2 extends StatefulWidget {
-  final void Function() onNextClick;
-  final void Function() onPrevClick;
-  const SongView2({Key? key, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
+  const SongView2({Key? key,}) : super(key: key);
 
   @override
   _SongView2State createState() => _SongView2State();
@@ -228,7 +226,7 @@ class _SongView2State extends State<SongView2> {
                           ],
                         ),
                         SizedBox(height: screenHeight * 0.0246,),
-                        PlayingBar(type: 0, onNextClick: widget.onNextClick, onPrevClick: widget.onPrevClick,),
+                        const PlayingBar(type: 0,),
                       ],
                     )
                 ),
