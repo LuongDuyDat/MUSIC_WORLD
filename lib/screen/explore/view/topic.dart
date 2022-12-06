@@ -203,7 +203,7 @@ class PlaylistSong extends StatelessWidget {
                       songName: state.songs.elementAt(index).name,
                       artist: state.songs.elementAt(index).artist.elementAt(0).name,
                       number: index + 1,
-                      isPlaying: state.songs.elementAt(index) == state1.playingSong.last,
+                      isPlaying: state1.playingSong.isNotEmpty && state.songs.elementAt(index) == state1.playingSong.last && playlist == state1.playingPlaylist,
                       onTap: () {
                         BlocProvider.of<HomeScreenBloc>(context).add(HomePlayPlaylist(playlist: playlist, index: index,));
                         Navigate.pushPage(context, const SongPage(), dialog: true);
@@ -237,51 +237,56 @@ class AlbumSong extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlbumPageBloc, AlbumPageState>(
-      buildWhen: (previous, current) {
-        if (previous.songs != current.songs) {
-          return true;
-        }
-        return false;
-      },
-      builder: (context, state) {
-        switch(state.songStatus) {
-          case AlbumPageStatus.initial:
-            context.read<AlbumPageBloc>().add(AlbumPageSubscriptionRequest(album.song));
-            return const Center();
-          case AlbumPageStatus.loading:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          case AlbumPageStatus.success:
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return CollectionListTile(
-                  leadingAsset: state.songs.elementAt(index).picture,
-                  songName: state.songs.elementAt(index).name,
-                  artist: state.songs.elementAt(index).artist.elementAt(0).name,
-                  number: index + 1,
-                  onTap: () {
-                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
-                    Navigate.pushPage(context, const SongPage(), dialog: true);
-                  },
+    return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+      builder: (context1, state1) {
+        return BlocBuilder<AlbumPageBloc, AlbumPageState>(
+          buildWhen: (previous, current) {
+            if (previous.songs != current.songs) {
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            switch(state.songStatus) {
+              case AlbumPageStatus.initial:
+                context.read<AlbumPageBloc>().add(AlbumPageSubscriptionRequest(album.song));
+                return const Center();
+              case AlbumPageStatus.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-              itemCount: state.songs.length,
-            );
-          case AlbumPageStatus.failure:
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
-              child: Center(
-                child: Text(
-                  somethingWrong,
-                  style: title5.copyWith(color: textPrimaryColor),
-                ),
-              ),
-            );
-        }
+              case AlbumPageStatus.success:
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return CollectionListTile(
+                      leadingAsset: state.songs.elementAt(index).picture,
+                      songName: state.songs.elementAt(index).name,
+                      artist: state.songs.elementAt(index).artist.elementAt(0).name,
+                      number: index + 1,
+                      isPlaying: state1.playingSong.isNotEmpty && state.songs.elementAt(index) == state1.playingSong.last && album == state1.playingAlbum,
+                      onTap: () {
+                        BlocProvider.of<HomeScreenBloc>(context).add(HomePlayAlbum(album: album, index: index,));
+                        Navigate.pushPage(context, const SongPage(), dialog: true);
+                      },
+                    );
+                  },
+                  itemCount: state.songs.length,
+                );
+              case AlbumPageStatus.failure:
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
+                  child: Center(
+                    child: Text(
+                      somethingWrong,
+                      style: title5.copyWith(color: textPrimaryColor),
+                    ),
+                  ),
+                );
+            }
+          },
+        );
       },
     );
   }

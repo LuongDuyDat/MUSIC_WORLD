@@ -53,7 +53,7 @@ Future<void> playPlaylist(my.Playlist playlist, int? index) async{
   }
 }
 
-Future<void> playAlbum(Album album) async{
+Future<void> playAlbum(Album album, int? index) async{
   try {
     await assetsAudioPlayer.open(
       Playlist(
@@ -72,8 +72,8 @@ Future<void> playAlbum(Album album) async{
       ),
       loopMode: LoopMode.playlist,
       showNotification: true,
-      autoStart: true,
     );
+    await assetsAudioPlayer.playlistPlayAtIndex(index ?? 0);
   } catch (t) {
     debugPrint(t.toString());
   }

@@ -23,6 +23,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     on<HomePrevSongClick>(_onPrevSongClick);
     on<HomeOnClickSong>(_onClickSong);
     on<HomePlayPlaylist>(_onPlayPlaylist);
+    on<HomePlayAlbum>(_onPlayAlbum);
     on<HomeAddSong>(_onAddSong);
     on<HomeNextTopicClick>(_onNextTopicClick);
     on<HomePrevTopicClick>(_onPrevTopicClick);
@@ -145,6 +146,23 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     await playPlaylist(event.playlist, event.index);
     emit(state.copyWith(
       playingPlaylist: () => event.playlist,
+      isPlaying: () => true,
+    ));
+  }
+
+  Future<void> _onPlayAlbum (
+      HomePlayAlbum event,
+      Emitter<HomeScreenState> emit,
+      ) async {
+    await _playingSubscription?.cancel();
+    emit(state.copyWith(
+      playingSong: () => [],
+      isPlaying: () => false,
+    ));
+    _playingSubscription = _assetsAudioPlayer.current.listen((event) => add(HomeAddSong(song: event?.audio.audio.metas.extra?["song"])));
+    await playAlbum(event.album, event.index);
+    emit(state.copyWith(
+      playingAlbum: () => event.album,
       isPlaying: () => true,
     ));
   }

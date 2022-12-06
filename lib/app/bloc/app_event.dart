@@ -57,32 +57,13 @@ class HomePlayPlaylist extends HomeScreenEvent {
 }
 
 class HomePlayAlbum extends HomeScreenEvent {
-  const HomePlayAlbum({required this.album});
+  const HomePlayAlbum({required this.album, this.index,});
 
   final Album album;
+  final int? index;
 
   @override
   List<Object> get props => [album];
-}
-
-class HomeOnClickSongOfPlaylist extends HomeScreenEvent {
-  const HomeOnClickSongOfPlaylist({required this.song, required this.playlist});
-
-  final Playlist playlist;
-  final Song song;
-
-  @override
-  List<Object> get props => [song, playlist];
-}
-
-class HomeOnClickSongOfAlbum extends HomeScreenEvent {
-  const HomeOnClickSongOfAlbum({required this.song, required this.album});
-
-  final Album album;
-  final Song song;
-
-  @override
-  List<Object> get props => [song, album];
 }
 
 class HomeNextTopicClick extends HomeScreenEvent {
