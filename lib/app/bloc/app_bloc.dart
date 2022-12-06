@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -11,6 +12,8 @@ import 'app_event.dart';
 import 'app_state.dart';
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
+  StreamSubscription<Playing?>? _playingSubscription;
+
   HomeScreenBloc({
     required AssetsAudioPlayer assetsAudioPlayer,
   }) : _assetsAudioPlayer = assetsAudioPlayer,
@@ -19,6 +22,14 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     on<HomeNextSongClick>(_onNextSongClick);
     on<HomePrevSongClick>(_onPrevSongClick);
     on<HomeOnClickSong>(_onClickSong);
+    on<HomePlayPlaylist>(_onPlayPlaylist);
+    on<HomeAddSong>(_onAddSong);
+  }
+
+  @override
+  Future<void> close() {
+    _playingSubscription?.cancel();
+    return super.close();
   }
 
   final AssetsAudioPlayer _assetsAudioPlayer;
@@ -67,6 +78,18 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     ));
   }
 
+  void _onAddSong(
+      HomeAddSong event,
+      Emitter<HomeScreenState> emit,
+      ) {
+    List<Song> tempSong = List.from(state.playingSong);
+    tempSong.add(event.song);
+    emit(state.copyWith(
+      playingSong: () => tempSong,
+      isPlaying: () => true,
+    ));
+  }
+
   void _onPrevSongClick(
       HomePrevSongClick event,
       Emitter<HomeScreenState> emit,
@@ -99,9 +122,27 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       HomeOnClickSong event,
       Emitter<HomeScreenState> emit,
       ) {
+    _playingSubscription?.cancel();
     play(event.song);
     emit(state.copyWith(
       playingSong: () => [event.song],
+      isPlaying: () => true,
+    ));
+  }
+
+  Future<void> _onPlayPlaylist (
+      HomePlayPlaylist event,
+      Emitter<HomeScreenState> emit,
+      ) async {
+    await _playingSubscription?.cancel();
+    emit(state.copyWith(
+      playingSong: () => [],
+      isPlaying: () => false,
+    ));
+    _playingSubscription = _assetsAudioPlayer.current.listen((event) => add(HomeAddSong(song: event?.audio.audio.metas.extra?["song"])));
+    await playPlaylist(event.playlist);
+    emit(state.copyWith(
+      playingPlaylist: () => event.playlist,
       isPlaying: () => true,
     ));
   }

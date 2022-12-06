@@ -127,7 +127,13 @@ class _TopicViewState extends State<TopicView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //todo: playlist
-                    PlayingBar(type: 1, onNextClick: () {}, onPrevClick: () {},),
+                    PlayingBar(
+                      type: 1,
+                      onNextClick: () {},
+                      onPrevClick: () {},
+                      playlist: widget.playlist,
+                      album: widget.album,
+                    ),
                     SizedBox(height: screenHeight * 0.1638,),
                     Text(
                       widget.type == "Playlist" ? widget.playlist!.name : widget.album!.name,

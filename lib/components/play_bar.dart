@@ -1,19 +1,57 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_world_app/app/bloc/app_event.dart';
+import 'package:music_world_app/repositories/playlist_repository/models/playlist.dart' as my;
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
 
+import '../app/bloc/app_bloc.dart';
+import '../repositories/album_repository/models/album.dart';
+
 class PlayingBar extends StatefulWidget {
   final int type;
+  final my.Playlist? playlist;
+  final Album? album;
   final void Function() onNextClick;
   final void Function() onPrevClick;
-  const PlayingBar({Key? key, required this.type, required this.onNextClick, required this.onPrevClick,}) : super(key: key);
+  const PlayingBar({
+    Key? key,
+    required this.type,
+    required this.onNextClick,
+    required this.onPrevClick,
+    this.playlist,
+    this.album,
+  }) : super(key: key);
 
   @override
   _PlayingBarState createState() => _PlayingBarState();
 }
 
 class _PlayingBarState extends State<PlayingBar> {
+
+  bool? _isPlayingTopic;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.playlist == null && widget.album == null) {
+      _isPlayingTopic = null;
+      return;
+    }
+    if (widget.playlist != null && assetsAudioPlayer.getCurrentAudioextra["playlist"] != null
+        && widget.playlist == assetsAudioPlayer.getCurrentAudioextra["playlist"]) {
+      _isPlayingTopic = true;
+      return;
+    }
+    if (widget.album != null && assetsAudioPlayer.getCurrentAudioextra["album"] != null
+        && widget.album == assetsAudioPlayer.getCurrentAudioextra["album"]) {
+      _isPlayingTopic = true;
+      return;
+    }
+    _isPlayingTopic = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
@@ -27,6 +65,7 @@ class _PlayingBarState extends State<PlayingBar> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                widget.type == 0 ?
                 InkWell(
                   child: ImageIcon(
                     const AssetImage("assets/icons/shuffle_icon.png"),
@@ -41,7 +80,7 @@ class _PlayingBarState extends State<PlayingBar> {
                       }
                     });
                   },
-                ),
+                ) : const Center(),
                 InkWell(
                   child: const ImageIcon(
                     AssetImage("assets/icons/skip_prev_icon.png"),
@@ -70,13 +109,34 @@ class _PlayingBarState extends State<PlayingBar> {
                     ),
                     alignment: Alignment.center,
                     child: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
+                      isPlaying && _isPlayingTopic != null &&_isPlayingTopic == true ? Icons.pause : Icons.play_arrow,
                       size: 50,
                       color: const Color(0xFFEEEEEE),
                     ),
                   ),
                   onTap: () {
-                    assetsAudioPlayer.playOrPause();
+                    print(1);
+                    if (widget.type == 0) {
+                      assetsAudioPlayer.playOrPause();
+                    } else {
+                      if (_isPlayingTopic != null) {
+                        if (_isPlayingTopic == true) {
+                          assetsAudioPlayer.playOrPause();
+                        } else {
+                          if (widget.playlist != null) {
+                            setState(() {
+                              _isPlayingTopic = true;
+                            });
+                            BlocProvider.of<HomeScreenBloc>(context).add(HomePlayPlaylist(playlist: widget.playlist!));
+                          } else {
+                            setState(() {
+                              _isPlayingTopic = true;
+                            });
+                            BlocProvider.of<HomeScreenBloc>(context).add(HomePlayAlbum(album: widget.album!,));
+                          }
+                        }
+                      }
+                    }
                   },
                 ),
                 InkWell(
@@ -86,10 +146,11 @@ class _PlayingBarState extends State<PlayingBar> {
                   ),
                   onTap: widget.onNextClick,
                 ),
+                widget.type == 0 ?
                 InkWell(
                   child: ImageIcon(
                     const AssetImage("assets/icons/loop_icon.png"),
-                    color: loop == LoopMode.none ? const Color(0xFFEEEEEE) : primaryColor,
+                    color: loop != LoopMode.single ? const Color(0xFFEEEEEE) : primaryColor,
                   ),
                   onTap: () {
                     //print(1);
@@ -104,7 +165,7 @@ class _PlayingBarState extends State<PlayingBar> {
                       assetsAudioPlayer.toggleLoop();
                     }
                   },
-                )
+                ) : const Center(),
               ],
             );
           },
