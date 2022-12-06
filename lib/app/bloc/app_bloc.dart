@@ -142,7 +142,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       isPlaying: () => false,
     ));
     _playingSubscription = _assetsAudioPlayer.current.listen((event) => add(HomeAddSong(song: event?.audio.audio.metas.extra?["song"])));
-    await playPlaylist(event.playlist);
+    await playPlaylist(event.playlist, event.index);
     emit(state.copyWith(
       playingPlaylist: () => event.playlist,
       isPlaying: () => true,

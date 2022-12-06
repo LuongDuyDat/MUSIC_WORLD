@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_world_app/app/bloc/app_state.dart';
 import 'package:music_world_app/components/play_bar.dart';
 import 'package:music_world_app/components/song_tile.dart';
 import 'package:music_world_app/screen/explore/bloc/album_bloc/album_bloc.dart';
@@ -126,7 +127,6 @@ class _TopicViewState extends State<TopicView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //todo: playlist
                     PlayingBar(
                       type: 1,
                       playlist: widget.playlist,
@@ -175,51 +175,56 @@ class PlaylistSong extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PlaylistPageBloc, PlaylistPageState>(
-      buildWhen: (previous, current) {
-        if (previous.songs != current.songs) {
-          return true;
-        }
-        return false;
-      },
-      builder: (context, state) {
-        switch(state.songStatus) {
-          case PlaylistPageStatus.initial:
-            context.read<PlaylistPageBloc>().add(PlaylistPageSubscriptionRequest(playlist.song));
-            return const Center();
-          case PlaylistPageStatus.loading:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          case PlaylistPageStatus.success:
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return CollectionListTile(
-                  leadingAsset: state.songs.elementAt(index).picture,
-                  songName: state.songs.elementAt(index).name,
-                  artist: state.songs.elementAt(index).artist.elementAt(0).name,
-                  number: index + 1,
-                  onTap: () {
-                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
-                    Navigate.pushPage(context, const SongPage(), dialog: true);
-                  },
+    return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+      builder: (context1, state1) {
+        return BlocBuilder<PlaylistPageBloc, PlaylistPageState>(
+          buildWhen: (previous, current) {
+            if (previous.songs != current.songs) {
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            switch(state.songStatus) {
+              case PlaylistPageStatus.initial:
+                context.read<PlaylistPageBloc>().add(PlaylistPageSubscriptionRequest(playlist.song));
+                return const Center();
+              case PlaylistPageStatus.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-              itemCount: state.songs.length,
-            );
-          case PlaylistPageStatus.failure:
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
-              child: Center(
-                child: Text(
-                  somethingWrong,
-                  style: title5.copyWith(color: textPrimaryColor),
-                ),
-              ),
-            );
-        }
+              case PlaylistPageStatus.success:
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return CollectionListTile(
+                      leadingAsset: state.songs.elementAt(index).picture,
+                      songName: state.songs.elementAt(index).name,
+                      artist: state.songs.elementAt(index).artist.elementAt(0).name,
+                      number: index + 1,
+                      isPlaying: state.songs.elementAt(index) == state1.playingSong.last,
+                      onTap: () {
+                        BlocProvider.of<HomeScreenBloc>(context).add(HomePlayPlaylist(playlist: playlist, index: index,));
+                        Navigate.pushPage(context, const SongPage(), dialog: true);
+                      },
+                    );
+                  },
+                  itemCount: state.songs.length,
+                );
+              case PlaylistPageStatus.failure:
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
+                  child: Center(
+                    child: Text(
+                      somethingWrong,
+                      style: title5.copyWith(color: textPrimaryColor),
+                    ),
+                  ),
+                );
+            }
+          },
+        );
       },
     );
   }

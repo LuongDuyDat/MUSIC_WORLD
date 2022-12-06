@@ -47,9 +47,10 @@ class HomeAddSong extends HomeScreenEvent {
 }
 
 class HomePlayPlaylist extends HomeScreenEvent {
-  const HomePlayPlaylist({required this.playlist});
+  const HomePlayPlaylist({required this.playlist, this.index,});
 
   final Playlist playlist;
+  final int? index;
 
   @override
   List<Object> get props => [playlist];
