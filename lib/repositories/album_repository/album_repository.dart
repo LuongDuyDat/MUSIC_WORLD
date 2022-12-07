@@ -25,10 +25,12 @@ class AlbumRepository {
   }
 
 
-  Stream<Album> getNewAlbums() async* {
+  Stream<Album> getNewAlbums(int ? start, int ? length) async* {
     var items = albumBox.values.toList();
     items.sort((b, a) => a.createAt.compareTo(b.createAt));
-    for (int i = 0; i < 3; i++) {
+    start ??= 0;
+    length ??= 3;
+    for (int i = min(start, items.length - 1); i < min(length, items.length); i++) {
       yield items[i];
     }
   }

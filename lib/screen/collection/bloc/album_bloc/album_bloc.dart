@@ -25,7 +25,8 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
       albumStatus: () => AlbumStatus.loading,
     ));
     await emit.forEach<Album>(
-        _albumRepository.getAlbumByArtistId(event.id, 0, 10, ''),
+        event.id == "new" ?  _albumRepository.getNewAlbums(null, 8)
+            :_albumRepository.getAlbumByArtistId(event.id, 0, 10, ''),
         onData: (album) {
           List<Album> temp = List.from(state.albums);
           temp.add(album);
@@ -62,7 +63,8 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
     int cnt = state.albums.length;
 
     await emit.forEach<Album>(
-        _albumRepository.getAlbumByArtistId(event.id ,state.albums.length, state.albums.length + 5, state.searchWord,),
+        event.id == "new" ? _albumRepository.getNewAlbums(state.albums.length, state.albums.length + 5)
+            : _albumRepository.getAlbumByArtistId(event.id ,state.albums.length, state.albums.length + 5, state.searchWord,),
         onData: (album) {
           List<Album> temp = List.from(state.albums);
           temp.add(album);

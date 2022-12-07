@@ -29,7 +29,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       recentSongStatus: () => HomeStatus.loading,
     ));
       await emit.forEach<Album>(
-          _albumRepository.getNewAlbums(),
+          _albumRepository.getNewAlbums(null, null),
           onData: (album) {
             List<Album> temp = List.from(state.newAlbums);
             temp.add(album);

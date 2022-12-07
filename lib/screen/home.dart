@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static final screen = [
     const Home(),
     const ExplorePage(),
-    Fm(),
+    const Fm(),
     const AccountPage(),
   ];
 
