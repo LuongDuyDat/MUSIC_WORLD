@@ -1,15 +1,23 @@
+import 'dart:io';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:music_world_app/repositories/album_repository/models/album.dart';
 import 'package:music_world_app/repositories/playlist_repository/models/playlist.dart' as my;
+import 'package:path_provider/path_provider.dart';
 
 import '../repositories/song_repository/models/song.dart';
 import 'globals.dart';
 
-void play(Song song) {
+Future<void> play(Song song) async {
   Map<String, dynamic> extras = {"pictures": song.picture, "song": song};
-  print("heelo");
-  if (song.deviceSongPath != null) {print(fileDirectory + song.deviceSongPath!);}
+  String path = '';
+  if (song.path == '') {
+    final directory = await getApplicationDocumentsDirectory();
+    File file = await File('${directory.path}/tmp.mp3').create();
+    file = await file.writeAsBytes(song.deviceSongPath!);
+    path = file.path;
+  }
   try {
     assetsAudioPlayer.open(
       song.path != '' ?
@@ -23,7 +31,7 @@ void play(Song song) {
         ),
       ) :
       Audio.file(
-        fileDirectory + '/' + song.deviceSongPath!,
+        path,
         metas: Metas(
           title: song.name,
           artist: song.artist.elementAt(0).name,

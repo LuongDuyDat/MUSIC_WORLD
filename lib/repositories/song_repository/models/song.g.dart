@@ -26,8 +26,8 @@ class SongAdapter extends TypeAdapter<Song> {
       createAt: fields[6] as DateTime,
       lyricPath: fields[7] as String,
       image: fields[8] as Uint8List?,
-      deviceLyricPath: fields[10] as String?,
-      deviceSongPath: fields[9] as String?,
+      deviceLyricPath: fields[10] as Uint8List?,
+      deviceSongPath: fields[9] as Uint8List?,
     );
   }
 

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,13 +53,12 @@ class _SongView2State extends State<SongView2> {
     return result;
   }
 
-  Future<String> getString(String lyricsPath, String? localLyricsPath) async {
+  Future<String> getString(String lyricsPath, Uint8List? localLyricsPath) async {
     String content = '';
-    print(lyricsPath);
     if (localLyricsPath == null) {
       content = await rootBundle.loadString(lyricsPath);
     } else {
-      content = await File(fileDirectory + localLyricsPath).readAsString();
+      content = String.fromCharCodes(localLyricsPath);
     }
     return content;
   }
@@ -70,180 +69,184 @@ class _SongView2State extends State<SongView2> {
       stream: assetsAudioPlayer.currentPosition,
       builder: (context, asyncSnapshot) {
         final Duration? duration = asyncSnapshot.data;
-        _currentSlideValue  = duration == null ? 0 : duration.inSeconds.toDouble();
-        _playProgress  = duration == null ? 0 : duration.inMilliseconds.toInt();
-        return BlocBuilder<HomeScreenBloc, HomeScreenState>(
-          buildWhen: (previous, current) {
-            return previous.playingSong != current.playingSong;
-          },
-          builder: (context, state) {
-            Song song = state.playingSong.elementAt(state.playingSong.length - 1);
-            return Column(
-              children: [
-                SizedBox(height: 0.062 * screenHeight,),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(screenWidth / 4),
-                  child: song.image == null ? Image.asset(song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,) 
-                      :Image.memory(song.image!, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
-                ),
-                SizedBox(height: 0.027 * screenHeight,),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 0.1 * screenHeight,
-                  ),
-                  child: Text(
-                    song.name,
-                    style: title2.copyWith(color: textPrimaryColor),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 0.01 * screenHeight,),
-                InkWell(
-                  child: Text(
-                    song.artist.elementAt(0).name,
-                    style: subHeadline1.copyWith(color: textPrimaryColor),
-                  ),
-                  onTap: () {
-                    Navigate.pushPage(context, SingerInfo(artist: song.artist.elementAt(0),));
-                  },
-                ),
-                SizedBox(height: 0.0246 * screenHeight,),
-                FutureBuilder<String>(
-                  future: getString(song.lyricPath, song.deviceLyricPath),
-                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                    if (snapshot.hasData) {
-                      String lyrics = snapshot.data!;
-                      var lyricModel = LyricsModelBuilder.create()
-                          .bindLyricToMain(lyrics)
-                          .getModel();
-                      return LyricLine(model: lyricModel, progress: _playProgress);
-                    }
-                    return const Center();
-                  },
-                ),
-                SizedBox(height: 0.0332 * screenHeight,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.138 * screenWidth),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        child: ImageIcon(
-                          const AssetImage("assets/icons/share_icon.png"),
-                          color: neutralColor1,
-                          size: 20,
-                        ),
-                        onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const ShareModal();
+        if (duration != null) {
+          return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+            buildWhen: (previous, current) {
+              return previous.playingSong != current.playingSong;
+            },
+            builder: (context, state) {
+              if (state.playingSong.isNotEmpty) {
+                Song song = state.playingSong.elementAt(state.playingSong.length - 1);
+                return Column(
+                  children: [
+                    SizedBox(height: 0.062 * screenHeight,),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(screenWidth / 4),
+                      child: song.picture != '' ? Image.asset(song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,)
+                          : Image.memory(song.image!, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
+                    ),
+                    SizedBox(height: 0.027 * screenHeight,),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: 0.1 * screenHeight,
+                      ),
+                      child: Text(
+                        song.name,
+                        style: title2.copyWith(color: textPrimaryColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: 0.01 * screenHeight,),
+                    InkWell(
+                      child: Text(
+                        song.artist.elementAt(0).name,
+                        style: subHeadline1.copyWith(color: textPrimaryColor),
+                      ),
+                      onTap: () {
+                        Navigate.pushPage(context, SingerInfo(artist: song.artist.elementAt(0),));
+                      },
+                    ),
+                    SizedBox(height: 0.0246 * screenHeight,),
+                    FutureBuilder<String>(
+                      future: getString(song.lyricPath, song.deviceLyricPath),
+                      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                        if (snapshot.hasData) {
+                          String lyrics = snapshot.data!;
+                          var lyricModel = LyricsModelBuilder.create()
+                              .bindLyricToMain(lyrics)
+                              .getModel();
+                          return LyricLine(model: lyricModel, progress: _playProgress);
+                        }
+                        return const Center();
+                      },
+                    ),
+                    SizedBox(height: 0.0332 * screenHeight,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 0.138 * screenWidth),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            child: ImageIcon(
+                              const AssetImage("assets/icons/share_icon.png"),
+                              color: neutralColor1,
+                              size: 20,
+                            ),
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const ShareModal();
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                      InkWell(
-                        child: ImageIcon(
-                          const AssetImage("assets/icons/add_playlist_icon.png"),
-                          color: neutralColor1,
-                          size: 20,
-                        ),
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const Notifications(
-                                width: 200,
-                                text: 'Add this song to My Playlist',
-                              ).build(context));
-                        },
-                      ),
-                      BlocBuilder<SongBloc, SongState>(
-                          buildWhen: (pre, state) {
-                            return pre.isFavorites != state.isFavorites;
-                          },
-                          builder: (context, state) {
-                            context.read<SongBloc>().add(CheckFavorites(song: song));
-                            return InkWell(
-                              child: ImageIcon(
-                                const AssetImage("assets/icons/favorite_icon.png"),
-                                color: state.isFavorites == true ? Colors.red : neutralColor1,
-                                size: 20,
-                              ),
-                              onTap: () {
-                                if (state.isFavorites == false) {
-                                  context.read<SongBloc>().add(AddFavoriteSong(song: song));
-                                } else {
-                                  context.read<SongBloc>().add(RemoveFavoriteSong(song: song));
-                                }
+                          ),
+                          InkWell(
+                            child: ImageIcon(
+                              const AssetImage("assets/icons/add_playlist_icon.png"),
+                              color: neutralColor1,
+                              size: 20,
+                            ),
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const Notifications(
+                                    width: 200,
+                                    text: 'Add this song to My Playlist',
+                                  ).build(context));
+                            },
+                          ),
+                          BlocBuilder<SongBloc, SongState>(
+                              buildWhen: (pre, state) {
+                                return pre.isFavorites != state.isFavorites;
                               },
-                            );
-                          }
-                      ),
-                      InkWell(
-                        child: ImageIcon(
-                          const AssetImage("assets/icons/download_icon.png"),
-                          color: neutralColor1,
-                          size: 20,
-                        ),
-                        onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const DownloadModal();
+                              builder: (context, state) {
+                                context.read<SongBloc>().add(CheckFavorites(song: song));
+                                return InkWell(
+                                  child: ImageIcon(
+                                    const AssetImage("assets/icons/favorite_icon.png"),
+                                    color: state.isFavorites == true ? Colors.red : neutralColor1,
+                                    size: 20,
+                                  ),
+                                  onTap: () {
+                                    if (state.isFavorites == false) {
+                                      context.read<SongBloc>().add(AddFavoriteSong(song: song));
+                                    } else {
+                                      context.read<SongBloc>().add(RemoveFavoriteSong(song: song));
+                                    }
+                                  },
+                                );
+                              }
+                          ),
+                          InkWell(
+                            child: ImageIcon(
+                              const AssetImage("assets/icons/download_icon.png"),
+                              color: neutralColor1,
+                              size: 20,
+                            ),
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const DownloadModal();
+                                },
+                              );
                             },
-                          );
-                        },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
-                  child: Slider(
-                    value: _currentSlideValue,
-                    max: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble() : 0,
-                    divisions: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds : 1,
-                    onChanged: (double value) {
-                      setState(() {
-                        _currentSlideValue = value;
-                        _playProgress = (value * 1000).toInt();
-                        seek(_currentSlideValue.toInt());
-                      });
-                    },
-                    thumbColor: primaryColor,
-                    activeColor: primaryColor,
-                    inactiveColor: neutralColor2,
-                  ),
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 0.0613 * screenWidth),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
+                      child: Slider(
+                        value: _currentSlideValue,
+                        max: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble() : 0,
+                        divisions: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds : 1,
+                        onChanged: (double value) {
+                          setState(() {
+                            _currentSlideValue = value;
+                            _playProgress = (value * 1000).toInt();
+                            seek(_currentSlideValue.toInt());
+                          });
+                        },
+                        thumbColor: primaryColor,
+                        activeColor: primaryColor,
+                        inactiveColor: neutralColor2,
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0613 * screenWidth),
+                        child: Column(
                           children: [
-                            Text(
-                              convertSecondtoMinutes(_currentSlideValue),
-                              style: lyric.copyWith(color: textPrimaryColor),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  convertSecondtoMinutes(_currentSlideValue),
+                                  style: lyric.copyWith(color: textPrimaryColor),
+                                ),
+                                Text(
+                                  assetsAudioPlayer.current.valueOrNull != null
+                                      ? convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble())
+                                      : "0:00",
+                                  style: lyric.copyWith(color: textPrimaryColor),
+                                ),
+                              ],
                             ),
-                            Text(
-                              assetsAudioPlayer.current.valueOrNull != null
-                                  ? convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble())
-                                  : "0:00",
-                              style: lyric.copyWith(color: textPrimaryColor),
-                            ),
+                            SizedBox(height: screenHeight * 0.0246,),
+                            PlayingBar(type: 0, playlist: state.playingPlaylist, album: state.playingAlbum,),
                           ],
-                        ),
-                        SizedBox(height: screenHeight * 0.0246,),
-                        PlayingBar(type: 0, playlist: state.playingPlaylist, album: state.playingAlbum,),
-                      ],
-                    )
-                ),
-              ],
-            );
-          },
-        );
+                        )
+                    ),
+                  ],
+                );
+              }
+              return const Center();
+            },
+          );
+        }
+        return const Center();
       },
     );
 

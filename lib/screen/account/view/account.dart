@@ -138,8 +138,8 @@ class AccountPage extends StatelessWidget {
                 ),
                 Divider(color: neutralColor3, thickness: 1.5,),
                 ShowMoreListTile(
-                  title: downloadString,
-                  icon: "assets/icons/download_icon.png",
+                  title: songString,
+                  icon: "assets/icons/music_icon.png",
                   trailing: "navigate_next",
                   onTap: () {
                     Navigate.pushPage(context, const CollectionSong(type: "me",));

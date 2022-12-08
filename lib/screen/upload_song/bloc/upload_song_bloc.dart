@@ -52,6 +52,7 @@ class UploadSongBloc extends Bloc<UploadSongEvent, UploadSongState> {
       ) {
     emit(state.copyWith(
       songPath: () => event.songPath,
+      songFile: () => event.songFile,
     ));
   }
 
@@ -61,6 +62,7 @@ class UploadSongBloc extends Bloc<UploadSongEvent, UploadSongState> {
       ) {
     emit(state.copyWith(
       lyricPath: () => event.lyricPath,
+      lyricFile: () => event.lyricFile,
     ));
   }
 
@@ -79,8 +81,8 @@ class UploadSongBloc extends Bloc<UploadSongEvent, UploadSongState> {
         '',
         '',
         state.pickedImage,
-        state.songPath,
-        state.lyricPath,
+        state.songFile,
+        state.lyricFile,
       );
       emit(state.copyWith(
         uploadSongStatus: () => UploadSongStatus.success,

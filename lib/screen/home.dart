@@ -139,9 +139,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Center(
                                 child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
-                                  leading: CircleAvatar(
-                                    backgroundImage: AssetImage(state.playingSong.elementAt(state.playingSong.length - 1).picture),
-                                  ),
+                                  leading: state.playingSong.elementAt(state.playingSong.length - 1).picture != ''
+                                      ? CircleAvatar(
+                                          backgroundImage: AssetImage(state.playingSong.elementAt(state.playingSong.length - 1).picture)
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: MemoryImage(state.playingSong.elementAt(state.playingSong.length - 1).image!),
+                                      ),
                                   title: Text(
                                     state.playingSong.elementAt(state.playingSong.length - 1).name,
                                     style: bodyRoboto2.copyWith(color: neutralColor3),

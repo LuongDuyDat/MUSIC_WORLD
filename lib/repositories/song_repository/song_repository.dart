@@ -107,17 +107,12 @@ class SongRepository {
     }
   }
 
-  Future<void> createSong(String name, Artist artist, String path, String introduction, String picture, String lyricPath, XFile? image, String? localSongPath, String? localLyricPath) async{
+  Future<void> createSong(String name, Artist artist, String path, String introduction, String picture, String lyricPath, XFile? image, Uint8List? localSong, Uint8List? localLyric) async{
     var artistBox = Hive.box<Artist>('artist');
     Uint8List? i;
-    print("Create Song");
     if (image != null) {
       i = await image.readAsBytes();
     }
-    print("Create Song");
-    print(name);
-    print(localSongPath!.substring(localSongPath.contains('/tmp') ? localSongPath.indexOf('/tmp') + 37 : 0));
-    print(localLyricPath!.substring(localLyricPath.contains('/tmp') ? localLyricPath.indexOf('/tmp') + 37 : 0));
     Song temp = Song(
         name: name,
         artist: HiveList(artistBox),
@@ -128,11 +123,19 @@ class SongRepository {
         createAt: DateTime.now(),
         lyricPath: lyricPath,
         image: i,
-        deviceSongPath: localSongPath.substring(localSongPath.indexOf('/tmp') + 37),
-        deviceLyricPath: localLyricPath.substring(localLyricPath.indexOf('/tmp') + 37),
+        deviceSongPath: localSong,
+        deviceLyricPath: localLyric,
     );
     temp.artist.add(artist);
     await songBox.add(temp);
+    artist.song.add(temp);
+    artist.save();
+  }
+
+  Future<void> deleteSong(dynamic key) async {
+    var songBox = Hive.box<Song>('song');
+
+    await songBox.delete(key);
   }
 
   Song? getArtistById(String id) {

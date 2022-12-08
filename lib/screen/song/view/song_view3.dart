@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,13 +42,12 @@ class _SongView3State extends State<SongView3> {
     return result;
   }
 
-  Future<String> getString(String lyricsPath, String? localLyricsPath) async {
+  Future<String> getString(String lyricsPath, Uint8List? localLyricsPath) async {
     String content = '';
-    print(lyricsPath);
     if (localLyricsPath == null) {
       content = await rootBundle.loadString(lyricsPath);
     } else {
-      content = await File(fileDirectory + localLyricsPath).readAsString();
+      content = String.fromCharCodes(localLyricsPath);
     }
     return content;
   }

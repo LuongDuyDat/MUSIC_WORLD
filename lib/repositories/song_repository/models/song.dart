@@ -26,9 +26,9 @@ class Song extends HiveObject {
   @HiveField(8)
   final Uint8List? image;
   @HiveField(9)
-  final String? deviceSongPath;
+  final Uint8List? deviceSongPath;
   @HiveField(10)
-  final String? deviceLyricPath;
+  final Uint8List? deviceLyricPath;
 
   Song({
     required this.name,

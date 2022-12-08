@@ -5,7 +5,6 @@ import 'package:music_world_app/screen/collection/view/collection_playlist.dart'
 import 'package:music_world_app/screen/explore/bloc/explore_bloc.dart';
 import 'package:music_world_app/screen/explore/bloc/explore_event.dart';
 import 'package:music_world_app/screen/explore/bloc/explore_state.dart';
-import 'package:music_world_app/screen/explore/view/topic.dart';
 import 'package:music_world_app/screen/song/view/song_page.dart';
 import 'package:music_world_app/util/navigate.dart';
 

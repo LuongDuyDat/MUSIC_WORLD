@@ -49,10 +49,10 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     ));
   }
 
-  void _onNextSongClick(
+  Future<void> _onNextSongClick(
       HomeNextSongClick event,
       Emitter<HomeScreenState> emit,
-      ) {
+      ) async{
     Box songBox = Hive.box<Song>('song');
     var items = songBox.values.toList();
     int resultI = -1;
@@ -74,7 +74,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     }
     List<Song> tempSong = List.from(state.playingSong);
     tempSong.add(items[resultI]);
-    play(items[resultI]);
+    await play(items[resultI]);
     emit(state.copyWith(
       playingSong: () => tempSong,
       isPlaying: () => true,
@@ -93,15 +93,15 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     ));
   }
 
-  void _onPrevSongClick(
+  Future<void> _onPrevSongClick(
       HomePrevSongClick event,
       Emitter<HomeScreenState> emit,
-      ) {
+      ) async{
     if (state.playingSong.length > 1) {
       var resultI = state.playingSong.elementAt(state.playingSong.length - 2);
       List<Song> temp = List.from(state.playingSong);
       temp.removeAt(temp.length - 1);
-      play(resultI);
+      await play(resultI);
       emit(state.copyWith(
         playingSong: () => temp,
         isPlaying: () => true,
@@ -112,7 +112,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       Random rand = Random();
       int resultI = rand.nextInt(items.length);
       List<Song> temp = [items[resultI]];
-      play(items[resultI]);
+      await play(items[resultI]);
       emit(state.copyWith(
         playingSong: () => temp,
         isPlaying: () => true,
@@ -121,12 +121,12 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
 
   }
 
-  void _onClickSong(
+  Future<void> _onClickSong(
       HomeOnClickSong event,
       Emitter<HomeScreenState> emit,
-      ) {
+      ) async{
     _playingSubscription?.cancel();
-    play(event.song);
+    await play(event.song);
     emit(state.copyWith(
       playingSong: () => [event.song],
       isPlaying: () => true,

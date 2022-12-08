@@ -1,10 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:music_world_app/screen/song/view/song_page.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
-import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/text_style.dart';
 
 class CollectionListTile extends StatelessWidget {

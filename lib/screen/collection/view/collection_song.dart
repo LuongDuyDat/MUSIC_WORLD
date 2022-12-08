@@ -8,9 +8,11 @@ import 'package:music_world_app/screen/collection/bloc/download_bloc/download_bl
 import 'package:music_world_app/screen/collection/bloc/download_bloc/download_event.dart';
 import 'package:music_world_app/screen/collection/bloc/download_bloc/download_state.dart';
 import 'package:music_world_app/screen/song/view/song_page.dart';
+import 'package:music_world_app/screen/upload_song/view/upload_song.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/string.dart';
 
+import '../../../components/button.dart';
 import '../../../repositories/artist_repository/models/artist.dart';
 import '../../../util/globals.dart';
 import '../../../util/navigate.dart';
@@ -31,20 +33,98 @@ class CollectionSong extends StatelessWidget {
     );
   }
 
-
-
 }
 
-class CollectionSongView extends StatelessWidget {
+class CollectionSongView extends StatefulWidget {
   final dynamic type;
   const CollectionSongView({Key? key, required this.type,}) : super(key: key);
 
   @override
+  _CollectionSongViewState createState() => _CollectionSongViewState();
+}
+
+class DownloadSong extends StatelessWidget {
+  final dynamic type;
+  const DownloadSong({Key? key, required this.type,}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
-    void onChangeSearchWord(String keyWord) {
-      context.read<DownloadSongBloc>().add(DownloadSongSearchWordChange(id: type == "me" ? account.key : type,
-          keyWord: keyWord));
-    }
+    return BlocBuilder<DownloadSongBloc, DownloadSongState>(
+        builder: (context, state) {
+          switch (state.downloadSongStatus) {
+            case DownloadSongStatus.initial:
+              context.read<DownloadSongBloc>().add(DownloadSongSubscriptionRequest(type == "me" ? account.key : type));
+              return const Center();
+            case DownloadSongStatus.loading:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case DownloadSongStatus.success:
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return CollectionListTile(
+                    leadingAsset: state.downloadSongs.elementAt(index).picture,
+                    songName: state.downloadSongs.elementAt(index).name,
+                    number: index + 1,
+                    artist: state.downloadSongs.elementAt(index).artist.elementAt(0).name,
+                    image: state.downloadSongs.elementAt(index).image,
+                    onTap: () {
+                      BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.downloadSongs.elementAt(index),));
+                      Navigate.pushPage(context, const SongPage(), dialog: true);
+                    },
+                  );
+                },
+                itemCount: state.downloadSongs.length,
+              );
+            case DownloadSongStatus.failure:
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
+                child: Center(
+                  child: Text(
+                    somethingWrong,
+                    style: title5.copyWith(color: textPrimaryColor),
+                  ),
+                ),
+              );
+          }
+        }
+    );
+  }
+
+}
+
+class _CollectionSongViewState extends State<CollectionSongView> {
+  late ScrollController _scrollController;
+
+  void _scrollListener() {
+    setState(() {
+      if (_scrollController.position.extentAfter < 0.27 * screenHeight) {
+        context.read<DownloadSongBloc>().add(DownloadLoadMoreSong(widget.type == "me" ? account.key : widget.type));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void onChangeSearchWord(String keyWord) {
+    context.read<DownloadSongBloc>().add(DownloadSongSearchWordChange(id: widget.type == "me" ? account.key : widget.type,
+        keyWord: keyWord));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -74,137 +154,37 @@ class CollectionSongView extends StatelessWidget {
             ),
           ),
           Padding(
-              padding: EdgeInsets.fromLTRB(0.064 * screenWidth, 0.015 * screenHeight, 0.05 * screenWidth, 0),
-              child: SizedBox(
-                height: screenHeight * 0.78,
-                child: DownloadSong(type: type),
-                /* ListView(
-                  shrinkWrap: true,
-                  children: const [
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song1.png",
-                      songName: "Nice For What",
-                      artist: "Girl Generation",
-                      number: 1,
+            padding: EdgeInsets.fromLTRB(0.064 * screenWidth, 0.015 * screenHeight, 0.05 * screenWidth, 0),
+            child: SizedBox(
+              height: screenHeight * 0.78,
+              child: Column(
+                children: [
+                  DownloadSong(type: widget.type),
+                  widget.type == "me" ? SizedBox(height: 0.02 * screenHeight) : const Center(),
+                  widget.type == "me" ? Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 0.4 * screenWidth,
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                      ),
+                      child: Button(
+                          text: uploadSongString,
+                          radius: 0,
+                          minimumSize: 0.049 * screenHeight,
+                          type: subHeadline1,
+                          onPressed: () {
+                            Navigate.pushPage(context, const UploadSong());
+                          }
+                      ),
                     ),
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song2.png",
-                      songName: "Where can I get some ?",
-                      artist: "Suji Wong",
-                      number: 2,
-                    ),
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song3.png",
-                      songName: "Why do we use it ?",
-                      artist: "Mercia",
-                      number: 3,
-                    ),
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song4.png",
-                      songName: "Turn Off The Light",
-                      artist: "Mino",
-                      number: 4,
-                    ),
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song5.png",
-                      songName: "Where are you now ?",
-                      artist: "Suji Wong",
-                      number: 5,
-                    ),
-                    CollectionListTile(
-                      leadingAsset: "assets/images/song1.png",
-                      songName: "W",
-                      artist: "DBSK",
-                      number: 6,
-                    ),
-                  ],
-                ),*/
+                  ) : const Center()
+                ],
               ),
+            ),
           )
         ],
       ),
-    );
-  }
-
-}
-
-class DownloadSong extends StatefulWidget {
-  final dynamic type;
-  const DownloadSong({Key? key, required this.type,}) : super(key: key);
-
-  @override
-  _DownloadSongState createState() => _DownloadSongState();
-
-}
-
-class _DownloadSongState extends State<DownloadSong> {
-  late ScrollController _scrollController;
-
-  void _scrollListener() {
-    setState(() {
-      if (_scrollController.position.extentAfter < 0.27 * screenHeight) {
-        context.read<DownloadSongBloc>().add(DownloadLoadMoreSong(widget.type == "me" ? account.key : widget.type));
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<DownloadSongBloc, DownloadSongState>(
-        builder: (context, state) {
-          switch (state.downloadSongStatus) {
-            case DownloadSongStatus.initial:
-              context.read<DownloadSongBloc>().add(DownloadSongSubscriptionRequest(widget.type == "me" ? account.key : widget.type));
-              return const Center();
-            case DownloadSongStatus.loading:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case DownloadSongStatus.success:
-              return ListView.separated(
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 12,);
-                },
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return CollectionListTile(
-                    leadingAsset: state.downloadSongs.elementAt(index).picture,
-                    songName: state.downloadSongs.elementAt(index).name,
-                    number: index + 1,
-                    artist: state.downloadSongs.elementAt(index).artist.elementAt(0).name,
-                    image: state.downloadSongs.elementAt(index).image,
-                    onTap: () {
-                      BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.downloadSongs.elementAt(index),));
-                      Navigate.pushPage(context, const SongPage(), dialog: true);
-                    },
-                  );
-                },
-                itemCount: state.downloadSongs.length,
-              );
-            case DownloadSongStatus.failure:
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: screenHeight / 15),
-                child: Center(
-                  child: Text(
-                    somethingWrong,
-                    style: title5.copyWith(color: textPrimaryColor),
-                  ),
-                ),
-              );
-          }
-        }
     );
   }
 

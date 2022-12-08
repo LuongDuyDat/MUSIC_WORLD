@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/text_style.dart';
 

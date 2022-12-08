@@ -259,7 +259,10 @@ class _RecentSongListState extends State<RecentSongList> {
                   artist: song.artist.elementAt(0).name,
                   number: index + 1,
                   image: song.image,
-                  onTap: () {
+                  onTap: () async {
+                    // var songBox = Hive.box<Song>('song');
+                    // SongRepository res = SongRepository(songBox: songBox);
+                    // await res.deleteSong(song.key);
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: song,));
                     Navigate.pushPage(context, const SongPage(), dialog: true);
                   },

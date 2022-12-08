@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -44,23 +46,27 @@ class UploadSongImageChange extends UploadSongEvent {
 class UploadSongPathChange extends UploadSongEvent {
   const UploadSongPathChange({
     required this.songPath,
+    required this.songFile,
   });
 
   final String songPath;
+  final Uint8List songFile;
 
   @override
-  List<Object?> get props => [songPath];
+  List<Object?> get props => [songPath, songFile];
 }
 
 class UploadSongLyricChange extends UploadSongEvent {
   const UploadSongLyricChange({
     required this.lyricPath,
+    required this.lyricFile,
   });
 
   final String lyricPath;
+  final Uint8List lyricFile;
 
   @override
-  List<Object?> get props => [lyricPath];
+  List<Object?> get props => [lyricPath, lyricFile];
 }
 
 class UploadSongSubmit extends UploadSongEvent {

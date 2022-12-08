@@ -22,7 +22,6 @@ class _SearchSongState extends State<SearchSong> {
   void _scrollListener() {
     setState(() {
       if (_scrollController.position.extentAfter < 0.2 * screenHeight) {
-        print(_scrollController.position.extentAfter);
         context.read<SearchBloc>().add(const SearchLoadMoreSongEvent());
       }
     });
