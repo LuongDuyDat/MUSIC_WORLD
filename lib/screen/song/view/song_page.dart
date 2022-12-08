@@ -11,19 +11,17 @@ import 'package:music_world_app/util/globals.dart';
 
 import '../../../repositories/song_repository/models/song.dart';
 import '../../../util/navigate.dart';
-import '../../../app/bloc/app_bloc.dart';
-import '../../../app/bloc/app_event.dart';
 
 class SongPage extends StatefulWidget {
   final int selectedIndex;
-  const SongPage({Key? key, this.selectedIndex = 0,}) : super(key: key);
+  const SongPage({Key? key, this.selectedIndex = 1,}) : super(key: key);
 
   @override
   _SongPageState createState() => _SongPageState();
 }
 
 class _SongPageState extends State<SongPage> {
-  int selectedIndex = 0;
+  int selectedIndex = 1;
   @override
   void initState() {
     super.initState();

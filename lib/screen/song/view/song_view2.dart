@@ -226,7 +226,7 @@ class _SongView2State extends State<SongView2> {
                           ],
                         ),
                         SizedBox(height: screenHeight * 0.0246,),
-                        const PlayingBar(type: 0,),
+                        PlayingBar(type: 0, playlist: state.playingPlaylist, album: state.playingAlbum,),
                       ],
                     )
                 ),

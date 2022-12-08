@@ -83,9 +83,9 @@ class _PlayingBarState extends State<PlayingBar> {
                     color: Color(0xFFEEEEEE),
                   ),
                   onTap: () {
-                    if (widget.type == 0) {
+                    if (widget.type == 0 && _isPlayingTopic != true) {
                       BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
-                    } else if (widget.type == 1 && _isPlayingTopic == true) {
+                    } else if (_isPlayingTopic == true) {
                       BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevTopicClick());
                     }
                   },
@@ -146,9 +146,9 @@ class _PlayingBarState extends State<PlayingBar> {
                     color: Color(0xFFEEEEEE),
                   ),
                   onTap: () {
-                    if (widget.type == 0) {
+                    if (widget.type == 0 && _isPlayingTopic != true) {
                       BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
-                    } else if (widget.type == 1 && _isPlayingTopic == true) {
+                    } else if (_isPlayingTopic == true) {
                       BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextTopicClick());
                     }
                   },

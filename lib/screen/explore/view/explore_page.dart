@@ -101,11 +101,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                     InkWell(
@@ -115,11 +115,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                     InkWell(
@@ -129,11 +129,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                   ],
@@ -149,11 +149,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                     InkWell(
@@ -163,11 +163,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                     InkWell(
@@ -177,11 +177,11 @@ class ExploreView extends StatelessWidget {
                         width: 0.256 * screenWidth,
                         height: 0.075 * screenHeight,
                         onTap: () {
-                          Navigate.pushPage(context, const Topic(type: "Playlist",));
+                          //Navigate.pushPage(context, const Topic(type: "Playlist",));
                         },
                       ),
                       onTap: () {
-                        Navigate.pushPage(context, const Topic(type: "Playlist",));
+                        //Navigate.pushPage(context, const Topic(type: "Playlist",));
                       },
                     ),
                   ],
