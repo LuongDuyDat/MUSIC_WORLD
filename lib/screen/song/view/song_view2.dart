@@ -76,7 +76,8 @@ class _SongView2State extends State<SongView2> {
                 SizedBox(height: 0.062 * screenHeight,),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(screenWidth / 4),
-                  child: Image.asset(song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
+                  child: song.image == null ? Image.asset(song.picture, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,) 
+                      :Image.memory(song.image!, width: screenWidth / 2, height: screenWidth / 2, fit: BoxFit.cover,),
                 ),
                 SizedBox(height: 0.027 * screenHeight,),
                 ConstrainedBox(

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:hive/hive.dart';
 import 'package:music_world_app/repositories/artist_repository/models/artist.dart';
 
@@ -21,6 +23,8 @@ class Song extends HiveObject {
   final DateTime createAt;
   @HiveField(7)
   final String lyricPath;
+  @HiveField(8)
+  final Uint8List? image;
 
   Song({
     required this.name,
@@ -31,5 +35,6 @@ class Song extends HiveObject {
     required this.listenNumber,
     required this.createAt,
     required this.lyricPath,
+    this.image,
   });
 }

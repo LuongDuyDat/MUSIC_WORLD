@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:music_world_app/repositories/artist_repository/models/artist.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
 
@@ -103,6 +105,32 @@ class SongRepository {
     for (int i = start; i < min(items.length, start + length); i++) {
       yield items[i];
     }
+  }
+
+  Future<void> createSong(String name, Artist artist, String path, String introduction, String picture, String lyricPath, XFile? image, String? localSongPath, String? localLyricPath) async{
+    var artistBox = Hive.box<Artist>('artist');
+    Uint8List? i;
+    print("Create Song");
+    if (image != null) {
+      i = await image.readAsBytes();
+    }
+    print("Create Song");
+    print(name);
+    print(localSongPath);
+    print(lyricPath);
+    Song temp = Song(
+        name: name,
+        artist: HiveList(artistBox),
+        path: path,
+        introduction: introduction,
+        picture: picture,
+        listenNumber: 0,
+        createAt: DateTime.now(),
+        lyricPath: lyricPath,
+        image: i,
+    );
+    //temp.artist.add(artist);
+    //await songBox.add(temp);
   }
 
   Song? getArtistById(String id) {

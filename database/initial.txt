@@ -175,7 +175,7 @@
     picture: "assets/images/song/chay_ngay_di.jpeg",
     listenNumber: 0,
     createAt: DateTime.now(),
-    lyricPath: 'Chay_Ngay_Di.lrc'
+    lyricPath: 'assets/lyrics/Chay_Ngay_Di.lrc'
   );
   Album ntvpc =  Album(
     name: "Ngày trôi về phía cũ",

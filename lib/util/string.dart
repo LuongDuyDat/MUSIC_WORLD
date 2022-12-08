@@ -82,3 +82,8 @@ String errorString1 = lang == 'en' ? 'Error' : 'Lỗi';
 String errorDetail1 = lang == 'en' ? "Something went wrong" : "Có gì đó sai sót";
 String errorString2 = lang == 'en' ? 'No internet' : 'Không có Internet';
 String errorDetail2 = lang == 'en' ? 'Please check your internet connection' : 'Hãy kiểm tra kết nối Internet của bạn';
+String uploadSongString = lang == 'en' ? 'Upload Song' : 'Đăng bài hát';
+String chooseSongString = lang == 'en' ? 'Choose a mp3 file' : 'Chọn file mp3';
+String chooseLyricString = lang == 'en' ? 'Choose a lrc file' : 'Chọn file lrc';
+String titleString = lang == 'en' ? 'Title' : 'Tên bài hát';
+String introductionString = lang == 'en' ? 'Introduction' : 'Giới thiệu';

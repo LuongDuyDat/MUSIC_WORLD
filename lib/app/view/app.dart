@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_world_app/app/bloc/app_bloc.dart';
 import 'package:music_world_app/screen/login/view/login_page.dart';
+import 'package:music_world_app/screen/upload_song/view/upload_song.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/theme.dart';
 
@@ -26,7 +27,7 @@ class _AppState extends State<App> {
     return BlocProvider(
       create: (_) => HomeScreenBloc(assetsAudioPlayer: assetsAudioPlayer),
       child: MaterialApp(
-        home: const LoginPage(),
+        home: const UploadSong(),
         theme: theme,
       ),
     );
