@@ -223,6 +223,7 @@ class SignInWithButtons extends StatelessWidget {
   void signInWithGoogle(BuildContext context) async {
     final googleSignIn = GoogleSignIn();
     // GoogleSignInAccount? _user;
+    googleSignIn.signOut();
 
     final googleUser = await googleSignIn.signIn(); //option only for android
     if (googleUser == null) return;

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -11,13 +12,22 @@ import '../../../util/navigate.dart';
 import '../../../util/string.dart';
 
 class Otp extends StatefulWidget{
-  const Otp({Key? key}) : super(key: key);
+  final String verificationId;
+
+  const Otp({
+    Key? key,
+    required this.verificationId,
+  }) : super(key: key);
 
   @override
   _OtpState createState() => _OtpState();
 }
 
 class _OtpState extends State<Otp> {
+  String code = "";
+  bool wrongOtp = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,17 +58,21 @@ class _OtpState extends State<Otp> {
               )
 
           ),
-          SizedBox(height: screenHeight * 0.1576,),
+          SizedBox(height: screenHeight * 0.1576,
+          child: Padding(
+            padding: EdgeInsets.only(left: screenWidth * 0.144,right: screenWidth * 0.144, top: screenHeight*0.04),
+            child: wrongOtp? Text("Wrong Otp", style: TextStyle(color: textErrorColor, fontSize: 20), textAlign: TextAlign.center,): const SizedBox(height: 10,),
+          )),
           Padding(
             padding: EdgeInsets.only(left: screenWidth * 0.144,right: screenWidth * 0.144),
             child: VerificationCodeInput(
               keyboardType: TextInputType.number,
-              length: 4,
-              itemSize: 50,
+              length: 6,
+              itemSize: 30,
               autofocus: true,
               textStyle: title2.copyWith(color: primaryColor),
               onCompleted: (String value) {
-                //...
+                code = value;
               },
             ),
           ),
@@ -67,8 +81,19 @@ class _OtpState extends State<Otp> {
             child: Button(
               text: continueString,
               radius: 0,
-              onPressed: () {
-                Navigate.pushPage(context, const VerifyDonePage());
+              onPressed: () async {
+                try {
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                      verificationId: widget.verificationId,
+                      smsCode: code);
+                  await auth.signInWithCredential(credential).then((value) {
+                    Navigate.pushPage(context, const VerifyDonePage());
+                  });
+                } catch (e) {
+                  wrongOtp = true;
+                  setState(() {});
+                }
+                // Navigate.pushPage(context, const VerifyDonePage());
               }, minimumSize: screenHeight * 0.0566,
             ),
           ),
