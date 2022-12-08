@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:music_world_app/components/password_field.dart';
+import 'package:music_world_app/screen/home/view/home_page.dart';
 import 'package:music_world_app/util/globals.dart';
 import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/colors.dart';
@@ -113,7 +115,7 @@ class LoginFormState extends State<LoginForm> {
       setState(() {
         String tmp = error.toString();
         tmp = tmp.substring(tmp.indexOf(']') + 2);
-        print(tmp);
+        // print(tmp);
         switch (tmp) {
           case 'Given String is empty or null':
             errorText = emptyStringError;
@@ -194,7 +196,9 @@ class SignInWithButtons extends StatelessWidget {
             ),
             SizedBox(width: screenWidth * 0.032,),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                signInWithGoogle(context);
+              },
               child: Image.asset(
                 "assets/icons/google-plus.png",
                 width: screenWidth * 0.1064,
@@ -216,4 +220,23 @@ class SignInWithButtons extends StatelessWidget {
     );
   }
 
+  void signInWithGoogle(BuildContext context) async {
+    final googleSignIn = GoogleSignIn();
+    // GoogleSignInAccount? _user;
+
+    final googleUser = await googleSignIn.signIn(); //option only for android
+    if (googleUser == null) return;
+    // _user = googleUser;
+
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+      Navigate.pushPage(context, const EnterPhonePage());
+    });
+  }
 }
