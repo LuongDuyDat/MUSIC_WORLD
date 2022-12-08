@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +42,14 @@ class _SongView3State extends State<SongView3> {
     return result;
   }
 
-  Future<String> getString(String lyricsPath) async {
-    final content = await rootBundle.loadString(lyricsPath);
+  Future<String> getString(String lyricsPath, String? localLyricsPath) async {
+    String content = '';
+    print(lyricsPath);
+    if (localLyricsPath == null) {
+      content = await rootBundle.loadString(lyricsPath);
+    } else {
+      content = await File(fileDirectory + localLyricsPath).readAsString();
+    }
     return content;
   }
 
@@ -82,7 +90,7 @@ class _SongView3State extends State<SongView3> {
                           }
                           return const Center();
                         },
-                        future: getString(song.lyricPath),
+                        future: getString(song.lyricPath, song.deviceLyricPath,),
                       ),
                     ],
                   ),
@@ -91,8 +99,8 @@ class _SongView3State extends State<SongView3> {
                   padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
                   child: Slider(
                     value: _currentSlideValue,
-                    max: assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble(),
-                    divisions: assetsAudioPlayer.current.value!.audio.duration.inSeconds,
+                    max: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble() : 0,
+                    divisions: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds : 1,
                     onChanged: (double value) {
                       setState(() {
                         _currentSlideValue = value;
@@ -117,7 +125,9 @@ class _SongView3State extends State<SongView3> {
                               style: lyric.copyWith(color: textPrimaryColor),
                             ),
                             Text(
-                              convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble()),
+                              assetsAudioPlayer.current.valueOrNull != null
+                                  ? convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble())
+                                  : "0:00",
                               style: lyric.copyWith(color: textPrimaryColor),
                             ),
                           ],

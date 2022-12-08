@@ -128,8 +128,8 @@ class SongRepository {
         createAt: DateTime.now(),
         lyricPath: lyricPath,
         image: i,
-        deviceLyricPath: localSongPath.substring(localSongPath.indexOf('/tmp') + 37),
-        deviceSongPath: localLyricPath.substring(localLyricPath.indexOf('/tmp') + 37),
+        deviceSongPath: localSongPath.substring(localSongPath.indexOf('/tmp') + 37),
+        deviceLyricPath: localLyricPath.substring(localLyricPath.indexOf('/tmp') + 37),
     );
     temp.artist.add(artist);
     await songBox.add(temp);

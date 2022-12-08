@@ -27,10 +27,11 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Directory>(
+    return FutureBuilder<Directory?>(
       builder: (context, snapshot) {
         if (snapshot.data != null) {
-          fileDirectory = snapshot.data!.path.substring(0, snapshot.data!.path.length - 9) + "/tmp/com.example.musicAppWorld-Inbox/";
+          fileDirectory = snapshot.data!.path;
+          fileDirectory = "/Users/luongduydat/Library/Developer/CoreSimulator/Devices/8656AEB9-38A1-4F60-A901-AA140F0FE791/data/Containers/Shared/AppGroup/A6C9F5AD-DD4E-4394-BE18-1A8FBE725883/File Provider Storage/";
           return BlocProvider(
             create: (_) => HomeScreenBloc(assetsAudioPlayer: assetsAudioPlayer),
             child: MaterialApp(
@@ -41,7 +42,7 @@ class _AppState extends State<App> {
         }
         return const Center();
       },
-      future: getLibraryDirectory(),
+      future: getApplicationDocumentsDirectory(),
     );
   }
 

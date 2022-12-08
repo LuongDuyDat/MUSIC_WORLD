@@ -8,8 +8,11 @@ import 'globals.dart';
 
 void play(Song song) {
   Map<String, dynamic> extras = {"pictures": song.picture, "song": song};
+  print("heelo");
+  if (song.deviceSongPath != null) {print(fileDirectory + song.deviceSongPath!);}
   try {
     assetsAudioPlayer.open(
+      song.path != '' ?
       Audio(
         song.path,
         metas: Metas(
@@ -17,6 +20,15 @@ void play(Song song) {
           artist: song.artist.elementAt(0).name,
           extra: extras,
           image: MetasImage.asset(song.picture),
+        ),
+      ) :
+      Audio.file(
+        fileDirectory + '/' + song.deviceSongPath!,
+        metas: Metas(
+          title: song.name,
+          artist: song.artist.elementAt(0).name,
+          extra: extras,
+          image: const MetasImage.asset("assets/images/activity1.png"),
         ),
       ),
       showNotification: true,

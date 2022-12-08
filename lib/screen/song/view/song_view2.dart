@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,8 +53,14 @@ class _SongView2State extends State<SongView2> {
     return result;
   }
 
-  Future<String> getString(String lyricsPath) async {
-    final content = await rootBundle.loadString(lyricsPath);
+  Future<String> getString(String lyricsPath, String? localLyricsPath) async {
+    String content = '';
+    print(lyricsPath);
+    if (localLyricsPath == null) {
+      content = await rootBundle.loadString(lyricsPath);
+    } else {
+      content = await File(fileDirectory + localLyricsPath).readAsString();
+    }
     return content;
   }
 
@@ -102,7 +109,7 @@ class _SongView2State extends State<SongView2> {
                 ),
                 SizedBox(height: 0.0246 * screenHeight,),
                 FutureBuilder<String>(
-                  future: getString(song.lyricPath),
+                  future: getString(song.lyricPath, song.deviceLyricPath),
                   builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                     if (snapshot.hasData) {
                       String lyrics = snapshot.data!;
@@ -195,8 +202,8 @@ class _SongView2State extends State<SongView2> {
                   padding: EdgeInsets.fromLTRB(0.01 * screenWidth, 0.025 * screenHeight, 0.01 * screenWidth, 0),
                   child: Slider(
                     value: _currentSlideValue,
-                    max: assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble(),
-                    divisions: assetsAudioPlayer.current.value!.audio.duration.inSeconds,
+                    max: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble() : 0,
+                    divisions: assetsAudioPlayer.current.valueOrNull != null ? assetsAudioPlayer.current.value!.audio.duration.inSeconds : 1,
                     onChanged: (double value) {
                       setState(() {
                         _currentSlideValue = value;
@@ -221,7 +228,9 @@ class _SongView2State extends State<SongView2> {
                               style: lyric.copyWith(color: textPrimaryColor),
                             ),
                             Text(
-                              convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble()),
+                              assetsAudioPlayer.current.valueOrNull != null
+                                  ? convertSecondtoMinutes(assetsAudioPlayer.current.value!.audio.duration.inSeconds.toDouble())
+                                  : "0:00",
                               style: lyric.copyWith(color: textPrimaryColor),
                             ),
                           ],
