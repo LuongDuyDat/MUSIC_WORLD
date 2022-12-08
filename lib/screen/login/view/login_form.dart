@@ -47,7 +47,7 @@ class LoginFormState extends State<LoginForm> {
                   errorText,
                   style: TextStyle(color: textErrorColor,),
                   textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
+                  // overflow: TextOverflow.ellipsis,
                 ),
               ],
             )

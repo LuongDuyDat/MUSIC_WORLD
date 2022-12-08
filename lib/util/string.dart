@@ -88,3 +88,6 @@ String badFormatError = lang == 'en' ? 'The email address is badly formatted.' :
 String notRegisteredError = lang == 'en' ? "Email is not registered" : 'Email chưa được đăng ký';
 String incorrectPasswordError = lang == 'en' ? 'Incorrect password' : 'Mật khẩu không chính xác';
 String defaultError = lang == 'en' ? 'Error' : 'Lỗi';
+String atleastLenPwError = lang == 'en' ? 'Password should be at least 6 characters' : "Mật khẩu cần tối thiểu 6 ký tự";
+String emailUsedError = lang == 'en' ? 'The email address was registered.' : "Địa chỉ email đã được đăng ký";
+
