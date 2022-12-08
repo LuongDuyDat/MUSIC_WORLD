@@ -203,6 +203,7 @@ class PlaylistSong extends StatelessWidget {
                       songName: state.songs.elementAt(index).name,
                       artist: state.songs.elementAt(index).artist.elementAt(0).name,
                       number: index + 1,
+                      image: state.songs.elementAt(index).image,
                       isPlaying: state1.playingSong.isNotEmpty && state.songs.elementAt(index) == state1.playingSong.last && playlist == state1.playingPlaylist,
                       onTap: () {
                         BlocProvider.of<HomeScreenBloc>(context).add(HomePlayPlaylist(playlist: playlist, index: index,));
@@ -265,6 +266,7 @@ class AlbumSong extends StatelessWidget {
                       songName: state.songs.elementAt(index).name,
                       artist: state.songs.elementAt(index).artist.elementAt(0).name,
                       number: index + 1,
+                      image: state.songs.elementAt(index).image,
                       isPlaying: state1.playingSong.isNotEmpty && state.songs.elementAt(index) == state1.playingSong.last && album == state1.playingAlbum,
                       onTap: () {
                         BlocProvider.of<HomeScreenBloc>(context).add(HomePlayAlbum(album: album, index: index,));

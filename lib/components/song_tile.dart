@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:music_world_app/screen/song/view/song_page.dart';
 import 'package:music_world_app/util/colors.dart';
@@ -13,6 +15,7 @@ class CollectionListTile extends StatelessWidget {
   final double large;
   final Function() onTap;
   final bool? isPlaying;
+  final Uint8List? image;
   const CollectionListTile({
     Key? key,
     this.number,
@@ -22,6 +25,7 @@ class CollectionListTile extends StatelessWidget {
     this.large = 32,
     required this.onTap,
     this.isPlaying,
+    this.image,
   }) : super(key: key);
 
   @override
@@ -42,7 +46,8 @@ class CollectionListTile extends StatelessWidget {
                 padding: EdgeInsets.only(top: screenHeight * 0.00446),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(3.0),
-                  child: Image.asset(leadingAsset, width: large, height: large, fit: BoxFit.cover,),
+                  child: image == null ? Image.asset(leadingAsset, width: large, height: large, fit: BoxFit.cover,) 
+                      : Image.memory(image!, width: large, height: large, fit: BoxFit.cover,),
                 ),
               ),
               title: Text(

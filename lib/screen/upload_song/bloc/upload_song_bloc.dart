@@ -50,7 +50,6 @@ class UploadSongBloc extends Bloc<UploadSongEvent, UploadSongState> {
       UploadSongPathChange event,
       Emitter<UploadSongState> emit,
       ) {
-    print(event.songPath);
     emit(state.copyWith(
       songPath: () => event.songPath,
     ));

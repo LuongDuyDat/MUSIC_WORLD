@@ -247,6 +247,7 @@ class _SongChartState extends State<SongChart> {
                   songName: state.songChart.elementAt(index).name,
                   artist: state.songChart.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
+                  image: state.songChart.elementAt(index).image,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songChart.elementAt(index),));
                     Navigate.pushPage(context, const SongPage(), dialog: true);

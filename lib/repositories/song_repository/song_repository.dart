@@ -116,8 +116,8 @@ class SongRepository {
     }
     print("Create Song");
     print(name);
-    print(localSongPath);
-    print(lyricPath);
+    print(localSongPath!.substring(localSongPath.contains('/tmp') ? localSongPath.indexOf('/tmp') + 37 : 0));
+    print(localLyricPath!.substring(localLyricPath.contains('/tmp') ? localLyricPath.indexOf('/tmp') + 37 : 0));
     Song temp = Song(
         name: name,
         artist: HiveList(artistBox),
@@ -128,9 +128,11 @@ class SongRepository {
         createAt: DateTime.now(),
         lyricPath: lyricPath,
         image: i,
+        deviceLyricPath: localSongPath.substring(localSongPath.indexOf('/tmp') + 37),
+        deviceSongPath: localLyricPath.substring(localLyricPath.indexOf('/tmp') + 37),
     );
-    //temp.artist.add(artist);
-    //await songBox.add(temp);
+    temp.artist.add(artist);
+    await songBox.add(temp);
   }
 
   Song? getArtistById(String id) {

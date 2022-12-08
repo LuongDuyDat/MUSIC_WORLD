@@ -252,13 +252,15 @@ class _RecentSongListState extends State<RecentSongList> {
             return ListView.builder(
               controller: scrollController,
               itemBuilder: (context, index) {
+                Song song = state.recentSongs.elementAt(index);
                 return CollectionListTile(
-                  leadingAsset: state.recentSongs.elementAt(index).picture,
-                  songName: state.recentSongs.elementAt(index).name,
-                  artist: state.recentSongs.elementAt(index).artist.elementAt(0).name,
+                  leadingAsset: song.picture,
+                  songName: song.name,
+                  artist: song.artist.elementAt(0).name,
                   number: index + 1,
+                  image: song.image,
                   onTap: () {
-                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.recentSongs.elementAt(index),));
+                    BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: song,));
                     Navigate.pushPage(context, const SongPage(), dialog: true);
                   },
                 );

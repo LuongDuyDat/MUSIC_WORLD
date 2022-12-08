@@ -116,6 +116,7 @@ class SuggestionSong extends StatelessWidget {
                   songName: state.songSuggestion.elementAt(index).name,
                   artist: state.songSuggestion.elementAt(index).artist.elementAt(0).name,
                   number: index + 1,
+                  image: state.songSuggestion.elementAt(index).image,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songSuggestion.elementAt(index),));
                   },

@@ -184,6 +184,7 @@ class _DownloadSongState extends State<DownloadSong> {
                     songName: state.downloadSongs.elementAt(index).name,
                     number: index + 1,
                     artist: state.downloadSongs.elementAt(index).artist.elementAt(0).name,
+                    image: state.downloadSongs.elementAt(index).image,
                     onTap: () {
                       BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.downloadSongs.elementAt(index),));
                       Navigate.pushPage(context, const SongPage(), dialog: true);

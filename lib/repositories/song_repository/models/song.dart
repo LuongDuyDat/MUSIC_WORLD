@@ -25,6 +25,10 @@ class Song extends HiveObject {
   final String lyricPath;
   @HiveField(8)
   final Uint8List? image;
+  @HiveField(9)
+  final String? deviceSongPath;
+  @HiveField(10)
+  final String? deviceLyricPath;
 
   Song({
     required this.name,
@@ -36,5 +40,7 @@ class Song extends HiveObject {
     required this.createAt,
     required this.lyricPath,
     this.image,
+    this.deviceLyricPath,
+    this.deviceSongPath,
   });
 }

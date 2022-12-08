@@ -223,6 +223,7 @@ class _ListSongState extends State<ListSong> {
               leadingAsset: widget.artist.song.elementAt(index).picture,
               songName: widget.artist.song.elementAt(index).name,
               artist: widget.artist.song.elementAt(index).artist.elementAt(0).name,
+              image: widget.artist.song.elementAt(index).image,
               onTap: () {
                 BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: widget.artist.song.elementAt(index),));
                 Navigate.pushPage(context, const SongPage(), dialog: true);

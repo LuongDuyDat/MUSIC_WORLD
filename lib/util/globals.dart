@@ -7,6 +7,7 @@ import 'package:music_world_app/repositories/artist_repository/models/artist.dar
 String lang = 'en';
 double screenWidth = 0;
 double screenHeight = 0;
+String fileDirectory = '';
 Box<Artist> a = Hive.box<Artist>('artist');
 Artist account = a.values.toList().elementAt(a.values.toList().length - 1);
 

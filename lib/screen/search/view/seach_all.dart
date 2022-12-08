@@ -220,6 +220,7 @@ class SearchSongList extends StatelessWidget {
                   songName: state.songs.elementAt(index).name,
                   artist: state.songs.elementAt(index).artist.elementAt(0).name,
                   large: 40,
+                  image: state.songs.elementAt(index).image,
                   onTap: () {
                     BlocProvider.of<HomeScreenBloc>(context).add(HomeOnClickSong(song: state.songs.elementAt(index),));
                     Navigate.pushPage(context, const SongPage(), dialog: true,);
