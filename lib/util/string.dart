@@ -82,3 +82,9 @@ String errorString1 = lang == 'en' ? 'Error' : 'Lỗi';
 String errorDetail1 = lang == 'en' ? "Something went wrong" : "Có gì đó sai sót";
 String errorString2 = lang == 'en' ? 'No internet' : 'Không có Internet';
 String errorDetail2 = lang == 'en' ? 'Please check your internet connection' : 'Hãy kiểm tra kết nối Internet của bạn';
+
+String emptyStringError = lang == 'en' ? "Given input is empty" : 'Đầu vào không hợp lệ';
+String badFormatError = lang == 'en' ? 'The email address is badly formatted.' : 'Email sai định dạng';
+String notRegisteredError = lang == 'en' ? "Email is not registered" : 'Email chưa được đăng ký';
+String incorrectPasswordError = lang == 'en' ? 'Incorrect password' : 'Mật khẩu không chính xác';
+String defaultError = lang == 'en' ? 'Error' : 'Lỗi';

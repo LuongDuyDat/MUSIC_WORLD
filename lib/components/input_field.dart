@@ -10,7 +10,7 @@ class Input extends StatelessWidget {
   final String hintText;
   final String? suffixIcon;
   final TextInputFormatter? textInputFormatter;
-  final TextEditingController? myController;
+  final TextEditingController? controller;
 
   const Input({
     Key? key,
@@ -18,7 +18,7 @@ class Input extends StatelessWidget {
     required this.hintText,
     this.suffixIcon,
     this.textInputFormatter,
-    this.myController,
+    this.controller,
   }) : super(key: key)  ;
 
   @override
@@ -46,7 +46,7 @@ class Input extends StatelessWidget {
       ),
       cursorColor: primaryColor,
       style: bodyMontserratMedium2.copyWith(color: textPrimaryColor),
-      controller: myController,
+      controller: controller,
       inputFormatters: [
         textInputFormatter != null ? textInputFormatter! : FilteringTextInputFormatter.deny(RegExp(r'')),
       ],

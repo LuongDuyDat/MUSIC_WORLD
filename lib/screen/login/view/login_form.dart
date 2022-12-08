@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:music_world_app/components/password_field.dart';
@@ -6,7 +7,6 @@ import 'package:music_world_app/util/navigate.dart';
 import 'package:music_world_app/util/colors.dart';
 import 'package:music_world_app/util/string.dart';
 import 'package:music_world_app/util/text_style.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../components/button.dart';
 import '../../../components/input_field.dart';
@@ -15,20 +15,48 @@ import '../../sign_up/view/sign_up_page.dart';
 import '../../verify_number/view/enter_phone.dart';
 
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState()=>LoginFormState();
+}
+
+class LoginFormState extends State<LoginForm> {
+  String errorText = "";
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    errorText = "";
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final passwordController = TextEditingController();
 
     return Column(
       children: [
-        SizedBox(height: screenHeight * 0.086,),
+        //show error
+        SizedBox (
+            height: screenHeight * 0.086,
+            child: Row (
+              children: [
+                errorText.isNotEmpty?Icon(Icons.error, color: textErrorColor,):const SizedBox(height: 10,),
+                Text(
+                  errorText,
+                  style: TextStyle(color: textErrorColor,),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            )
+        ),
+
         Input(
           icon: "assets/icons/email_icon.png",
           hintText: emailString,
+          controller: emailController,
         ),
         SizedBox(height: screenHeight * 0.044,),
         InputPassword(myController: passwordController),
@@ -46,9 +74,8 @@ class LoginForm extends StatelessWidget {
           )
         ),
         SizedBox(height: screenHeight * 0.0776,),
-        Button(text: signInString, radius: 0, onPressed: () {
-          Navigate.pushPage(context, const EnterPhonePage());
-        }, minimumSize: screenHeight * 0.0566,),
+        Button(text: signInString, radius: 0, onPressed: handleSignIn
+          , minimumSize: screenHeight * 0.0566,),
         SizedBox(height: screenHeight * 0.165,),
         const SignInWithButtons(),
         SizedBox(height: screenHeight * 0.074,),
@@ -75,6 +102,36 @@ class LoginForm extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void handleSignIn() {
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text,
+        password: passwordController.text)
+        .then((value) {
+      Navigate.pushPage(context, const EnterPhonePage());
+    }).onError((error, stackTrace) {
+      setState(() {
+        String tmp = error.toString();
+        tmp = tmp.substring(tmp.indexOf(']') + 2);
+        print(tmp);
+        switch (tmp) {
+          case 'Given String is empty or null':
+            errorText = emptyStringError;
+            break;
+          case 'The email address is badly formatted.':
+            errorText = badFormatError;
+            break;
+          case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+            errorText = notRegisteredError;
+            break;
+          case 'The password is invalid or the user does not have a password.':
+            errorText = incorrectPasswordError;
+            break;
+          default:
+            errorText = defaultError;
+        }
+      });
+    });
   }
 
 }
