@@ -10,6 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:music_world_app/repositories/song_repository/models/song.dart';
 import 'package:music_world_app/repositories/song_repository/song_repository.dart';
+import 'package:music_world_app/screen/collection/view/collection_song.dart';
 import 'package:music_world_app/screen/upload_song/bloc/upload_song_bloc.dart';
 import 'package:music_world_app/screen/upload_song/bloc/upload_song_event.dart';
 import 'package:music_world_app/screen/upload_song/bloc/upload_song_state.dart';
@@ -55,7 +56,7 @@ class _UploadSongViewState extends State<UploadSongView> {
               builder: (context, snapshot) {
                 return const Center();
               },
-              future: Future.microtask(() => Navigate.pushPageReplacement(context, const UploadSong())),
+              future: Future.microtask(() => Navigate.pushPageReplacement(context, const CollectionSong(type: "me"))),
             );
           default:
             return Scaffold(
