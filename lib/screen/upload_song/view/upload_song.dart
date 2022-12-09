@@ -55,7 +55,7 @@ class _UploadSongViewState extends State<UploadSongView> {
               builder: (context, snapshot) {
                 return const Center();
               },
-              future: Future.microtask(() => Navigate.popPage(context)),
+              future: Future.microtask(() => Navigate.pushPageReplacement(context, const UploadSong())),
             );
           default:
             return Scaffold(

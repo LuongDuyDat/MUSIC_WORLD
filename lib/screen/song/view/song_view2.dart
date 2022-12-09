@@ -69,6 +69,8 @@ class _SongView2State extends State<SongView2> {
       stream: assetsAudioPlayer.currentPosition,
       builder: (context, asyncSnapshot) {
         final Duration? duration = asyncSnapshot.data;
+        _currentSlideValue  = duration == null ? 0 : duration.inSeconds.toDouble();
+        _playProgress  = duration == null ? 0 : duration.inMilliseconds.toInt();
         if (duration != null) {
           return BlocBuilder<HomeScreenBloc, HomeScreenState>(
             buildWhen: (previous, current) {
