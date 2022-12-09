@@ -1,3 +1,7 @@
+  await Hive.deleteBoxFromDisk('song');
+  await Hive.deleteBoxFromDisk('playlist');
+  await Hive.deleteBoxFromDisk('artist');
+  await Hive.deleteBoxFromDisk('album');
   var albumBox = await Hive.openBox<Album>("album");
   var songBox = await Hive.openBox<Song>('song');
   var artistBox = await Hive.openBox<Artist>('artist');
@@ -25,6 +29,7 @@
     email: 'buianhtuan@gmail.com',
     gender: 'Male',
     favorites: HiveList(songBox),
+    recentSearch: []
   );
   Artist luongDuyDat = Artist(
     name: "Lương Duy Đạt",
@@ -42,6 +47,7 @@
     email: 'luongduydat123@gmail.com',
     gender: 'Male',
     favorites: HiveList(songBox),
+    recentSearch: []
   );
   Artist sonTungMTP = Artist(
     name: "Sơn Tùng MTP",
@@ -62,6 +68,7 @@
     email: 'mtp@gmail.com',
     gender: 'Male',
     favorites: HiveList(songBox),
+    recentSearch: []
   );
   Artist hienHo = Artist(
     name: "Hiền Hồ",
@@ -83,6 +90,7 @@
     email: 'buianhtuan@gmail.com',
     gender: 'Male',
     favorites: HiveList(songBox),
+    recentSearch: [],
   );
   Song rntchnd = Song(
     name: "Rồi người thương cũng hoá người dưng",
@@ -148,34 +156,34 @@
   );
 //album: Sky Tour
   Song cadsv = Song(
-    name: "Chắc ai đó sẽ về",
-    artist: HiveList(artistBox),
-    path: "assets/songs/Chac_Ai_Do_Se_Ve.mp3",
-    introduction: "Trống",
-    picture: "assets/images/song/chac_ai_do_se_ve.jpeg",
-    listenNumber: 0,
-    createAt: DateTime.now(),
-    lyricPath: 'assets/lyrics/Chac_Ai_Do_Se_Ve.lrc'
+      name: "Chắc ai đó sẽ về",
+      artist: HiveList(artistBox),
+      path: "assets/songs/Chac_Ai_Do_Se_Ve.mp3",
+      introduction: "Trống",
+      picture: "assets/images/song/chac_ai_do_se_ve.jpeg",
+      listenNumber: 0,
+      createAt: DateTime.now(),
+      lyricPath: 'assets/lyrics/Chac_Ai_Do_Se_Ve.lrc'
   );
   Song ctktvn = Song(
-    name: "Chúng ta không thuộc về nhau",
-    artist: HiveList(artistBox),
-    path: "assets/songs/Chung_Ta_Khong_Thuoc_Ve_Nhau.mp3",
-    introduction: "Trống",
-    picture: "assets/images/song/chung_ta_khong_thuoc_ve_nhau.jpeg",
-    listenNumber: 0,
-    createAt: DateTime.now(),
-    lyricPath: 'assets/lyrics/Chung_Ta_Khong_Thuoc_Ve_Nhau.lrc'
+      name: "Chúng ta không thuộc về nhau",
+      artist: HiveList(artistBox),
+      path: "assets/songs/Chung_Ta_Khong_Thuoc_Ve_Nhau.mp3",
+      introduction: "Trống",
+      picture: "assets/images/song/chung_ta_khong_thuoc_ve_nhau.jpeg",
+      listenNumber: 0,
+      createAt: DateTime.now(),
+      lyricPath: 'assets/lyrics/Chung_Ta_Khong_Thuoc_Ve_Nhau.lrc'
   );
   Song cnd = Song(
-    name: "Chạy ngay đi",
-    artist: HiveList(artistBox),
-    path: "assets/songs/Chay_Ngay_Di.mp3",
-    introduction: "Trống",
-    picture: "assets/images/song/chay_ngay_di.jpeg",
-    listenNumber: 0,
-    createAt: DateTime.now(),
-    lyricPath: 'assets/lyrics/Chay_Ngay_Di.lrc'
+      name: "Chạy ngay đi",
+      artist: HiveList(artistBox),
+      path: "assets/songs/Chay_Ngay_Di.mp3",
+      introduction: "Trống",
+      picture: "assets/images/song/chay_ngay_di.jpeg",
+      listenNumber: 0,
+      createAt: DateTime.now(),
+      lyricPath: 'assets/lyrics/Chay_Ngay_Di.lrc'
   );
   Album ntvpc =  Album(
     name: "Ngày trôi về phía cũ",

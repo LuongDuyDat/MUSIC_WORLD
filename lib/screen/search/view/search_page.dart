@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:music_world_app/repositories/album_repository/album_repository.dart';
@@ -84,32 +85,40 @@ class _SearchPageViewState extends State<SearchPageView> {
                 color: Color(0xFF292D39),
               ),
               child: Center(
-                child: TextField(
-                  controller: _controller,
-                  style: bodyRegular1.copyWith(color: neutralColor2),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search, color: Colors.white, size: 20,),
-                    hintText: searchString,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintStyle: bodyRegular1.copyWith(color: neutralColor2),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _controller.text = "";
-                        });
-                        context.read<SearchBloc>().add(const SearchWordChange(keyWord: ''));
-                      },
-                      icon: Icon(Icons.cancel_outlined, size: 12, color: neutralColor2),
+                child: RawKeyboardListener(
+                  child: TextField(
+                    controller: _controller,
+                    style: bodyRegular1.copyWith(color: neutralColor2),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search, color: Colors.white, size: 20,),
+                      hintText: searchString,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintStyle: bodyRegular1.copyWith(color: neutralColor2),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _controller.text = "";
+                          });
+                          context.read<SearchBloc>().add(const SearchWordChange(keyWord: ''));
+                        },
+                        icon: Icon(Icons.cancel_outlined, size: 12, color: neutralColor2),
+                      ),
                     ),
+                    autofocus: false,
+                    cursorColor: primaryColor,
+                    onChanged: (text) {
+                      context.read<SearchBloc>().add(SearchWordChange(keyWord: text));
+                    },
                   ),
-                  autofocus: false,
-                  cursorColor: primaryColor,
-                  onChanged: (text) {
-                    context.read<SearchBloc>().add(SearchWordChange(keyWord: text));
+                  onKey: (event) {
+                    if (event.data.logicalKey.keyId == LogicalKeyboardKey.enter.keyId) {
+
+                    }
                   },
+                  focusNode: FocusNode(),
                 ),
               )
           ),

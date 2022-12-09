@@ -47,46 +47,48 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double recentMusicHeight = 0.3906;
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.064),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                newAlbumString,
-                style: title5.copyWith(color: textPrimaryColor),
-              ),
-              InkWell(
-                child: Text(
-                  viewAllString,
-                  style: bodyRegular3.copyWith(color: textPrimaryColor),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.064),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  newAlbumString,
+                  style: title5.copyWith(color: textPrimaryColor),
                 ),
-                onTap: () {
-                  Navigate.pushPage(context, const CollectionAlbum(type: "new",));
-                },
-              ),
-            ],
-          ),
-        ),
-        const NewAlbumSlider(),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(top: screenHeight * 0.049, left: screenWidth * 0.064),
-            child: Text(
-              recentMusicString,
-              style: title5.copyWith(color: textPrimaryColor),
+                InkWell(
+                  child: Text(
+                    viewAllString,
+                    style: bodyRegular3.copyWith(color: textPrimaryColor),
+                  ),
+                  onTap: () {
+                    Navigate.pushPage(context, const CollectionAlbum(type: "new",));
+                  },
+                ),
+              ],
             ),
           ),
-        ),
-        Container(
-          height: recentMusicHeight * screenHeight,
-          padding: EdgeInsets.only(left: screenWidth * 0.064),
-          child: RecentSongList(height: recentMusicHeight,),
-        ),
-      ],
+          const NewAlbumSlider(),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(top: screenHeight * 0.049, left: screenWidth * 0.064),
+              child: Text(
+                recentMusicString,
+                style: title5.copyWith(color: textPrimaryColor),
+              ),
+            ),
+          ),
+          Container(
+            height: recentMusicHeight * screenHeight,
+            padding: EdgeInsets.only(left: screenWidth * 0.064),
+            child: RecentSongList(height: recentMusicHeight,),
+          ),
+        ],
+      ),
     );
   }
 
