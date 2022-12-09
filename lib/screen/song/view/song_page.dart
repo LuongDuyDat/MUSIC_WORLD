@@ -65,7 +65,6 @@ class _SongPageState extends State<SongPage> {
             }
           },
           child: Scaffold(
-            resizeToAvoidBottomInset: false,
             backgroundColor: selectedIndex == 1 ? backgroundColor : Colors.transparent,
             appBar: AppBar(
               backgroundColor: selectedIndex == 1 ? backgroundColor : Colors.transparent,
@@ -76,43 +75,45 @@ class _SongPageState extends State<SongPage> {
                 },
               ),
             ),
-            body: Column(
-              children: [
-                SizedBox(height: 0.06 * screenHeight,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 3,
-                      decoration: BoxDecoration(
-                        color: selectedIndex != 0 ? const Color(0xFF71737B) : textPrimaryColor,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 0.06 * screenHeight,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: selectedIndex != 0 ? const Color(0xFF71737B) : textPrimaryColor,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4.77,),
-                    Container(
-                      width: 20,
-                      height: 3,
-                      decoration: BoxDecoration(
-                        color: selectedIndex != 1 ? const Color(0xFF71737B) : textPrimaryColor,
+                      const SizedBox(width: 4.77,),
+                      Container(
+                        width: 20,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: selectedIndex != 1 ? const Color(0xFF71737B) : textPrimaryColor,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4.77,),
-                    Container(
-                      width: 20,
-                      height: 3,
-                      decoration: BoxDecoration(
-                        color: selectedIndex != 2 ? const Color(0xFF71737B) : textPrimaryColor,
+                      const SizedBox(width: 4.77,),
+                      Container(
+                        width: 20,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: selectedIndex != 2 ? const Color(0xFF71737B) : textPrimaryColor,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                BlocProvider(
-                  create: (_) => SongBloc(songRepository: SongRepository(songBox: songBox)),
-                  child: screen[selectedIndex],
-                ),
-              ],
-            ),
+                    ],
+                  ),
+                  BlocProvider(
+                    create: (_) => SongBloc(songRepository: SongRepository(songBox: songBox)),
+                    child: screen[selectedIndex],
+                  ),
+                ],
+              ),
+            )
           ),
         ),
       ],

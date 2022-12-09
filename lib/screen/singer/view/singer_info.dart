@@ -52,11 +52,12 @@ class SingerInfoView extends StatelessWidget {
               image: DecorationImage(
                 image: AssetImage(/*"assets/images/singer_background.png"*/ artist.picture,),
                 fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6),
+                    BlendMode.dstATop),
               )
           ),
         ),
         Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,

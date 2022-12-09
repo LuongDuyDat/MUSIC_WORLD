@@ -21,7 +21,6 @@ class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: backgroundColor,
         leading: IconButton(
@@ -31,63 +30,65 @@ class _OtpState extends State<Otp> {
           },
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-              padding: EdgeInsets.only(left: screenWidth * 0.06, top: screenHeight * 0.0345),
-              child: SizedBox(
-                width: screenWidth * 0.6587,
-                child: Text(
-                  verifyNumberString,
-                  style: titleMedium3.copyWith(
-                    color: textPrimaryColor,
-                    height: 1.3,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(left: screenWidth * 0.06, top: screenHeight * 0.0345),
+                child: SizedBox(
+                  width: screenWidth * 0.6587,
+                  child: Text(
+                    verifyNumberString,
+                    style: titleMedium3.copyWith(
+                      color: textPrimaryColor,
+                      height: 1.3,
+                    ),
                   ),
-                ),
-              )
+                )
 
-          ),
-          SizedBox(height: screenHeight * 0.1576,),
-          Padding(
-            padding: EdgeInsets.only(left: screenWidth * 0.144,right: screenWidth * 0.144),
-            child: VerificationCodeInput(
-              keyboardType: TextInputType.number,
-              length: 4,
-              itemSize: 50,
-              autofocus: true,
-              textStyle: title2.copyWith(color: primaryColor),
-              onCompleted: (String value) {
-                //...
-              },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: screenWidth * 0.14267,right: screenWidth * 0.14267, top: screenHeight * 0.08,),
-            child: Button(
-              text: continueString,
-              radius: 0,
-              onPressed: () {
-                Navigate.pushPage(context, const VerifyDonePage());
-              }, minimumSize: screenHeight * 0.0566,
-            ),
-          ),
-          SizedBox(height: screenHeight * 0.043,),
-          Center(
-            child: SizedBox(
-              width: screenWidth * 0.17,
-              child: Text(
-                resentCodeString,
-                style: labelBold1.copyWith(
-                  color: primaryColor,
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
+            SizedBox(height: screenHeight * 0.1576,),
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth * 0.144,right: screenWidth * 0.144),
+              child: VerificationCodeInput(
+                keyboardType: TextInputType.number,
+                length: 4,
+                itemSize: 50,
+                autofocus: true,
+                textStyle: title2.copyWith(color: primaryColor),
+                onCompleted: (String value) {
+                  //...
+                },
               ),
             ),
-          )
-        ],
-      ),
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth * 0.14267,right: screenWidth * 0.14267, top: screenHeight * 0.08,),
+              child: Button(
+                text: continueString,
+                radius: 0,
+                onPressed: () {
+                  Navigate.pushPage(context, const VerifyDonePage());
+                }, minimumSize: screenHeight * 0.0566,
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.043,),
+            Center(
+              child: SizedBox(
+                width: screenWidth * 0.17,
+                child: Text(
+                  resentCodeString,
+                  style: labelBold1.copyWith(
+                    color: primaryColor,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 

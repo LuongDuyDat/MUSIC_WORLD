@@ -105,11 +105,12 @@ class _TopicViewState extends State<TopicView> {
                   widget.type == "Playlist" ?
                   widget.playlist!.picture : widget.album!.picture,),
                 fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6),
+                    BlendMode.dstATop),
               )
           ),
         ),
         Scaffold(
-            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,

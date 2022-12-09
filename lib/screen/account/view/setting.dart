@@ -14,7 +14,6 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -31,41 +30,43 @@ class SettingPage extends StatelessWidget {
           style: title5.copyWith(color: textPrimaryColor),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.064 * screenWidth, 0.02 * screenHeight, 0.064 * screenWidth, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShowMoreListTile(title: notificationString, icon: "assets/icons/notification_icon.png", trailing: "toggle_on",),
-                Divider(color: neutralColor3, thickness: 1.5,),
-                ShowMoreListTile(title: displayLanguageString, icon: "assets/icons/language_icon.png", trailing: "navigate_next",),
-                Divider(color: neutralColor3, thickness: 1.5,),
-                ShowMoreListTile(title: versionString + " 1.0", icon: "assets/icons/version_icon.png", trailing: "navigate_next",),
-                Container(
-                  margin: EdgeInsets.only(top: 0.48 * screenHeight,),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: primaryColor,)
-                  ),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.fromHeight(0.05665 * screenHeight),
-                      primary: primaryColor,
-                      backgroundColor: backgroundColor,
-                      textStyle: bodyMedium1,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.064 * screenWidth, 0.02 * screenHeight, 0.064 * screenWidth, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShowMoreListTile(title: notificationString, icon: "assets/icons/notification_icon.png", trailing: "toggle_on",),
+                  Divider(color: neutralColor3, thickness: 1.5,),
+                  ShowMoreListTile(title: displayLanguageString, icon: "assets/icons/language_icon.png", trailing: "navigate_next",),
+                  Divider(color: neutralColor3, thickness: 1.5,),
+                  ShowMoreListTile(title: versionString + " 1.0", icon: "assets/icons/version_icon.png", trailing: "navigate_next",),
+                  Container(
+                    margin: EdgeInsets.only(top: 0.48 * screenHeight,),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: primaryColor,)
                     ),
-                    onPressed: () {
-                      Navigate.pushPage(context, const LoginPage());
-                    },
-                    child: Text(signOutString),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.fromHeight(0.05665 * screenHeight),
+                        primary: primaryColor,
+                        backgroundColor: backgroundColor,
+                        textStyle: bodyMedium1,
+                      ),
+                      onPressed: () {
+                        Navigate.pushPage(context, const LoginPage());
+                      },
+                      child: Text(signOutString),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 

@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
       accountString,
     ];
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: backgroundColor,
         automaticallyImplyLeading: false,
@@ -117,76 +116,78 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
 
-      body: Center(
-          child: Stack(
-            children: [
-              screen[index],
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
-                  buildWhen: (previous, current) {
-                   return previous.playingSong != current.playingSong || previous.isPlaying != current.isPlaying;
-                  },
-                  builder: (BuildContext context, state) {
-                    switch (state.isPlaying) {
-                      case true:
-                        return InkWell(
-                          child: Container(
-                              height: 0.079 * screenHeight,
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                              ),
-                              child: Center(
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
-                                  leading: state.playingSong.elementAt(state.playingSong.length - 1).picture != ''
-                                      ? CircleAvatar(
-                                          backgroundImage: AssetImage(state.playingSong.elementAt(state.playingSong.length - 1).picture)
-                                        )
-                                      : CircleAvatar(
-                                          backgroundImage: MemoryImage(state.playingSong.elementAt(state.playingSong.length - 1).image!),
+      body: SingleChildScrollView(
+        child: Center(
+            child: Stack(
+              children: [
+                screen[index],
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+                    buildWhen: (previous, current) {
+                      return previous.playingSong != current.playingSong || previous.isPlaying != current.isPlaying;
+                    },
+                    builder: (BuildContext context, state) {
+                      switch (state.isPlaying) {
+                        case true:
+                          return InkWell(
+                            child: Container(
+                                height: 0.079 * screenHeight,
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                ),
+                                child: Center(
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.064),
+                                    leading: state.playingSong.elementAt(state.playingSong.length - 1).picture != ''
+                                        ? CircleAvatar(
+                                        backgroundImage: AssetImage(state.playingSong.elementAt(state.playingSong.length - 1).picture)
+                                    )
+                                        : CircleAvatar(
+                                      backgroundImage: MemoryImage(state.playingSong.elementAt(state.playingSong.length - 1).image!),
+                                    ),
+                                    title: Text(
+                                      state.playingSong.elementAt(state.playingSong.length - 1).name,
+                                      style: bodyRoboto2.copyWith(color: neutralColor3),
+                                    ),
+                                    trailing: Container(
+                                      alignment: Alignment.centerRight,
+                                      width: screenWidth * 0.3413,
+                                      child: PlayingBar(
+                                        type: 1,
+                                        onPrevClick: () {
+                                          if (state.playingPlaylist == null && state.playingAlbum == null) {
+                                            BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
+                                          } else {
+                                            BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevTopicClick());
+                                          }
+                                        },
+                                        onNextClick: () {
+                                          if (state.playingPlaylist == null && state.playingAlbum == null) {
+                                            BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
+                                          } else {
+                                            BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextTopicClick());
+                                          }
+                                        },
                                       ),
-                                  title: Text(
-                                    state.playingSong.elementAt(state.playingSong.length - 1).name,
-                                    style: bodyRoboto2.copyWith(color: neutralColor3),
-                                  ),
-                                  trailing: Container(
-                                    alignment: Alignment.centerRight,
-                                    width: screenWidth * 0.3413,
-                                    child: PlayingBar(
-                                      type: 1,
-                                      onPrevClick: () {
-                                        if (state.playingPlaylist == null && state.playingAlbum == null) {
-                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevSongClick());
-                                        } else {
-                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomePrevTopicClick());
-                                        }
-                                      },
-                                      onNextClick: () {
-                                        if (state.playingPlaylist == null && state.playingAlbum == null) {
-                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextSongClick());
-                                        } else {
-                                          BlocProvider.of<HomeScreenBloc>(context).add(const HomeNextTopicClick());
-                                        }
-                                      },
                                     ),
                                   ),
-                                ),
-                              )
-                          ),
-                          onTap: () {
-                            Navigate.pushPage(context, const SongPage(selectedIndex: 1,), dialog: true);
-                          },
-                        );
-                      default:
-                        return const SizedBox(width: 0, height: 0,);
-                    }
-                  },
+                                )
+                            ),
+                            onTap: () {
+                              Navigate.pushPage(context, const SongPage(selectedIndex: 1,), dialog: true);
+                            },
+                          );
+                        default:
+                          return const SizedBox(width: 0, height: 0,);
+                      }
+                    },
 
+                  ),
                 ),
-              ),
-            ],
-          )
+              ],
+            )
+        ),
       ),
 
       bottomNavigationBar: BottomNavigationBar(

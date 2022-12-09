@@ -22,20 +22,21 @@ class SignUpPage extends StatelessWidget {
           ),
         ),
         Scaffold(
-            resizeToAvoidBottomInset: false,
             backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-            body: Padding(
-              padding: EdgeInsets.only(left: screenWidth * 0.1067, right: screenWidth * 0.1067, top: screenHeight * 0.127),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    signUPString,
-                    style: title2.copyWith(color: textPrimaryColor),
-                  ),
-                  const SignUpForm(),
-                ],
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(left: screenWidth * 0.1067, right: screenWidth * 0.1067, top: screenHeight * 0.127),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      signUPString,
+                      style: title2.copyWith(color: textPrimaryColor),
+                    ),
+                    const SignUpForm(),
+                  ],
+                ),
               ),
             )
         )

@@ -59,8 +59,6 @@ class _UploadSongViewState extends State<UploadSongView> {
             );
           default:
             return Scaffold(
-              //Todo: delete resize
-              //resizeToAvoidBottomInset: false,
               backgroundColor: backgroundColor,
               appBar: AppBar(
                 backgroundColor: backgroundColor,
