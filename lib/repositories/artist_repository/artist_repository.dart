@@ -138,4 +138,23 @@ class ArtistRepository {
     return artist.following.length;
   }
 
+  List<String> getRecentSearch(dynamic id) {
+    Artist? artist = artistBox.get(id);
+    if (artist != null) {
+      int start = max(0, artist.recentSearch.length - 3);
+      if (artist.recentSearch.isNotEmpty) {
+        return artist.recentSearch.sublist(start).reversed.toList();
+      }
+    }
+    return [];
+  }
+
+  void addRecentSearch(dynamic id, String content) {
+    Artist? artist = artistBox.get(id);
+    if (artist != null) {
+      artist.recentSearch.add(content);
+      artist.save();
+    }
+  }
+
 }

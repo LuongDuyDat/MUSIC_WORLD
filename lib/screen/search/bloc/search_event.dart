@@ -8,6 +8,19 @@ abstract class SearchEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class SearchSubscriptionRequest extends SearchEvent {
+  const SearchSubscriptionRequest();
+}
+
+class SearchAddRecentSearch extends SearchEvent {
+  const SearchAddRecentSearch({required this.content});
+
+  final String content;
+
+  @override
+  List<Object> get props => [content,];
+}
+
 class SearchLoadMoreAlbumEvent extends SearchEvent {
   const SearchLoadMoreAlbumEvent();
 }

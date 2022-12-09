@@ -10,6 +10,7 @@ import '../../../repositories/album_repository/album_repository.dart';
 import '../../../repositories/album_repository/models/album.dart';
 import '../../../repositories/artist_repository/artist_repository.dart';
 import '../../../repositories/song_repository/models/song.dart';
+import '../../../util/globals.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({
@@ -22,11 +23,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
        _songRepository = songRepository,
        _artistRepository = artistRepository,
         super(const SearchState()) {
+    on<SearchSubscriptionRequest>(_onSubscriptionRequest);
     on<SearchLoadMoreAlbumEvent>(_onLoadMoreAlbum);
     on<SearchLoadMorePlaylistEvent>(_onLoadMorePlaylist);
     on<SearchLoadMoreSongEvent>(_onLoadMoreSong);
     on<SearchLoadMoreArtistEvent>(_onLoadMoreArtist);
     on<SearchWordChange>(_onSearchWordChange);
+    on<SearchAddRecentSearch>(_onAddRecentSearch);
   }
 
   final AlbumRepository _albumRepository;
@@ -34,6 +37,27 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final SongRepository _songRepository;
   final ArtistRepository _artistRepository;
 
+  void _onAddRecentSearch (
+      SearchAddRecentSearch event,
+      Emitter<SearchState> emit,
+      ) {
+    _artistRepository.addRecentSearch(account.key, event.content);
+  }
+
+  void _onSubscriptionRequest (
+      SearchSubscriptionRequest event,
+      Emitter<SearchState> emit,
+      ) {
+    emit(state.copyWith(
+      recentSearchStatus: () => SearchStatus.loading,
+    ));
+    List<String> temp = _artistRepository.getRecentSearch(account.key);
+    print(temp.length);
+    emit(state.copyWith(
+      recentSearchStatus: () => SearchStatus.success,
+      recentSearch: () => temp,
+    ));
+  }
 
   Future<void> _onLoadMoreAlbum (
       SearchLoadMoreAlbumEvent event,

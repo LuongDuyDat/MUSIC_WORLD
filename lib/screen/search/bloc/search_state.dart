@@ -22,6 +22,8 @@ class SearchState extends Equatable {
     this.artistStatus = SearchStatus.initial,
     this.hasMoreArtist = true,
     this.searchWord = '',
+    this.recentSearch = const [],
+    this.recentSearchStatus = SearchStatus.initial,
   });
 
   final List<Album> albums;
@@ -37,6 +39,8 @@ class SearchState extends Equatable {
   final SearchStatus artistStatus;
   final bool hasMoreArtist;
   final String searchWord;
+  final List<String> recentSearch;
+  final SearchStatus recentSearchStatus;
 
   SearchState copyWith({
     SearchStatus Function()? albumStatus,
@@ -52,6 +56,8 @@ class SearchState extends Equatable {
     List<Artist> Function()? artists,
     bool Function()? hasMoreArtist,
     String Function()? searchWord,
+    List<String> Function()? recentSearch,
+    SearchStatus Function()? recentSearchStatus,
   }) {
     return SearchState(
       albumStatus: albumStatus != null ? albumStatus() : this.albumStatus,
@@ -67,6 +73,8 @@ class SearchState extends Equatable {
       artists: artists != null ? artists() : this.artists,
       hasMoreArtist: hasMoreArtist != null ? hasMoreArtist() : this.hasMoreArtist,
       searchWord: searchWord != null ? searchWord() : this.searchWord,
+      recentSearch: recentSearch != null ? recentSearch() : this.recentSearch,
+      recentSearchStatus: recentSearchStatus != null ? recentSearchStatus() : this.recentSearchStatus,
     );
   }
 
@@ -85,6 +93,8 @@ class SearchState extends Equatable {
     artistStatus,
     hasMoreArtist,
     searchWord,
+    recentSearch,
+    recentSearchStatus,
   ];
 
 }

@@ -115,7 +115,8 @@ class _SearchPageViewState extends State<SearchPageView> {
                   ),
                   onKey: (event) {
                     if (event.data.logicalKey.keyId == LogicalKeyboardKey.enter.keyId) {
-
+                      print(_controller.text);
+                      context.read<SearchBloc>().add(SearchAddRecentSearch(content: _controller.text));
                     }
                   },
                   focusNode: FocusNode(),
@@ -150,6 +151,7 @@ class _SearchPageViewState extends State<SearchPageView> {
           builder: (context, state) {
             switch (state.searchWord) {
               case '':
+                context.read<SearchBloc>().add(const SearchSubscriptionRequest());
                 return Padding(
                   padding: EdgeInsets.only(left: screenWidth * 0.064, right: screenWidth * 0.064, top: screenHeight * 0.04),
                   child: Column(
@@ -164,33 +166,39 @@ class _SearchPageViewState extends State<SearchPageView> {
                       Container(
                         height: screenHeight * 0.0345,
                         margin: EdgeInsets.only(top: screenHeight * 0.0172),
-                        child: ListView(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            Container(
-                              width: screenWidth * 0.2267,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: primaryColor),
-                              ),
-                              child: Button2(
-                                text: "Fall out boy",
-                                onPressed: () => changeText("Fall out boy"),
-                              ),
-                            ),
-                            SizedBox(width: screenWidth * 0.032,),
-                            Container(
-                              width: screenWidth * 0.2267,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: primaryColor),
-                              ),
-                              child: Button2(
-                                text: "Good girl",
-                                onPressed: () => changeText("Good girl"),
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: BlocBuilder<SearchBloc, SearchState>(
+                          buildWhen: (previous, current) {
+                            return previous.recentSearchStatus != current.recentSearchStatus
+                                || previous.recentSearch != current.recentSearch;
+                          },
+                          builder: (context, state) {
+                            switch (state.recentSearchStatus) {
+                              case SearchStatus.initial:
+                                return const Center();
+                              default:
+                                return ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(width: screenWidth * 0.032,);
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      width: screenWidth * 0.2267,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: primaryColor),
+                                      ),
+                                      child: Button2(
+                                        text: state.recentSearch.elementAt(index),
+                                        onPressed: () => changeText(state.recentSearch.elementAt(index)),
+                                      ),
+                                    );
+                                  },
+                                  itemCount: state.recentSearch.length,
+                                );
+                            }
+                          },
+                        )
                       ),
                       SizedBox(height: screenHeight * 0.049,),
                       Text(
