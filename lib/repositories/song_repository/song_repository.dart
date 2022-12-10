@@ -54,7 +54,8 @@ class SongRepository {
 
   Stream<Song> getRecentSongs(int limit) async* {
     var items = songBox.values.toList();
-    items.sort((b, a) => a.createAt.compareTo(b.createAt));
+    print(items.length);
+    items.sort((a, b) => a.createAt.compareTo(b.createAt));
     for (int i = 0; i < min(items.length, limit); i++) {
       yield items[i];
     }
@@ -62,8 +63,8 @@ class SongRepository {
 
   Stream<Song> loadMoreRecentSongs(int index, int more) async* {
     var items = songBox.values.toList();
-    items.sort((b, a) => a.createAt.compareTo(b.createAt));
-    for (int i = index; i < min(items.length, index + more - 1); i++) {
+    items.sort((a, b) => a.createAt.compareTo(b.createAt));
+    for (int i = index; i < min(items.length, index + more); i++) {
       yield items[i];
     }
   }

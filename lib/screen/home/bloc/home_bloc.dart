@@ -97,17 +97,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
     );
 
-    if (state.recentSongs.length < cnt + 5) {
-      emit(
-        state.copyWith(
-          hasMoreRecentSong: () => false,
-        ));
-    }
-
     if (state.recentSongStatus != HomeStatus.failure) {
       emit(
           state.copyWith(
               recentSongStatus: () => HomeStatus.success
+          ));
+    }
+
+    if (state.recentSongs.length < cnt + 5) {
+      emit(
+          state.copyWith(
+            hasMoreRecentSong: () => false,
           ));
     }
   }
