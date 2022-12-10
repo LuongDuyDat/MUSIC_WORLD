@@ -148,8 +148,8 @@ class NewAlbumSlider extends StatelessWidget {
                         future: PaletteGenerator.fromImageProvider(
                           AssetImage(state.newAlbums[index].picture),
                           size: Size(width, height),
-                          region: Offset(width * 0.1, height * 0.8)
-                          & Size(0.9 * width, 0.2 * height),
+                          // region: Offset(0, height * 0.8)
+                          // & Size(width, 0.2 * height),
                         ),
                         builder: (BuildContext context, AsyncSnapshot<PaletteGenerator> snapshot) {
                           if (snapshot.hasData) {

@@ -233,7 +233,7 @@
   );
   artistBox.addAll([buiAnhTuan, hienHo, sonTungMTP, luongDuyDat]);
   songBox.addAll([hnmlb, pkm, hmm, rntchnd, enxkr, ctcht, cadsv, ctktvn, cnd]);
-  albumBox.addAll([ntvpc, chungTa, skyTour]);
+  albumBox.addAll([ntvpc, skyTour, chungTa]);
   playlistBox.addAll([nhacHienDai, nhacCu]);
   buiAnhTuan.song.addAll([hnmlb, pkm, hmm]);
   hienHo.song.addAll([rntchnd, enxkr]);
